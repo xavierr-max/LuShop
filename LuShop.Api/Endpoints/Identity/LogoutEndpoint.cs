@@ -1,0 +1,20 @@
+﻿using LuShop.Api.Common.Api;
+using LuShop.Api.Models;
+using Microsoft.AspNetCore.Identity;
+
+namespace LuShop.Api.Endpoints.Identity;
+
+public class LogoutEndpoint : IEndpoint
+{
+    public static void Map(IEndpointRouteBuilder app)
+        => app
+            .MapPost("/logout", HandleAsync)
+            .RequireAuthorization();
+
+    //SignInManager<>: objeto que gerencia o processo de login/logout
+    private static async Task<IResult> HandleAsync(SignInManager<User> signInManager)
+    {
+        await signInManager.SignOutAsync();
+        return Results.Ok();
+    }
+}

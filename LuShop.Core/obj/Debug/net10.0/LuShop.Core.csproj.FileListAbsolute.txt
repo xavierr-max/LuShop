@@ -1,0 +1,22 @@
+C:\Users\maxwe\OneDrive\Área de Trabalho\DevMax\Projetos\LuShop\LuShop.Core\bin\Debug\net10.0\LuShop.Core.deps.json
+C:\Users\maxwe\OneDrive\Área de Trabalho\DevMax\Projetos\LuShop\LuShop.Core\bin\Debug\net10.0\LuShop.Core.dll
+C:\Users\maxwe\OneDrive\Área de Trabalho\DevMax\Projetos\LuShop\LuShop.Core\bin\Debug\net10.0\LuShop.Core.pdb
+C:\Users\maxwe\OneDrive\Área de Trabalho\DevMax\Projetos\LuShop\LuShop.Core\obj\Debug\net10.0\LuShop.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\maxwe\OneDrive\Área de Trabalho\DevMax\Projetos\LuShop\LuShop.Core\obj\Debug\net10.0\LuShop.Core.AssemblyInfoInputs.cache
+C:\Users\maxwe\OneDrive\Área de Trabalho\DevMax\Projetos\LuShop\LuShop.Core\obj\Debug\net10.0\LuShop.Core.AssemblyInfo.cs
+C:\Users\maxwe\OneDrive\Área de Trabalho\DevMax\Projetos\LuShop\LuShop.Core\obj\Debug\net10.0\LuShop.Core.csproj.CoreCompileInputs.cache
+C:\Users\maxwe\OneDrive\Área de Trabalho\DevMax\Projetos\LuShop\LuShop.Core\obj\Debug\net10.0\LuShop.Core.dll
+C:\Users\maxwe\OneDrive\Área de Trabalho\DevMax\Projetos\LuShop\LuShop.Core\obj\Debug\net10.0\refint\LuShop.Core.dll
+C:\Users\maxwe\OneDrive\Área de Trabalho\DevMax\Projetos\LuShop\LuShop.Core\obj\Debug\net10.0\LuShop.Core.pdb
+C:\Users\maxwe\OneDrive\Área de Trabalho\DevMax\Projetos\LuShop\LuShop.Core\obj\Debug\net10.0\ref\LuShop.Core.dll
+C:\Users\maxwe\Desktop\DevMax\Projetos\LuShop\LuShop.Core\bin\Debug\net10.0\LuShop.Core.deps.json
+C:\Users\maxwe\Desktop\DevMax\Projetos\LuShop\LuShop.Core\bin\Debug\net10.0\LuShop.Core.dll
+C:\Users\maxwe\Desktop\DevMax\Projetos\LuShop\LuShop.Core\bin\Debug\net10.0\LuShop.Core.pdb
+C:\Users\maxwe\Desktop\DevMax\Projetos\LuShop\LuShop.Core\obj\Debug\net10.0\LuShop.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\maxwe\Desktop\DevMax\Projetos\LuShop\LuShop.Core\obj\Debug\net10.0\LuShop.Core.AssemblyInfoInputs.cache
+C:\Users\maxwe\Desktop\DevMax\Projetos\LuShop\LuShop.Core\obj\Debug\net10.0\LuShop.Core.AssemblyInfo.cs
+C:\Users\maxwe\Desktop\DevMax\Projetos\LuShop\LuShop.Core\obj\Debug\net10.0\LuShop.Core.csproj.CoreCompileInputs.cache
+C:\Users\maxwe\Desktop\DevMax\Projetos\LuShop\LuShop.Core\obj\Debug\net10.0\LuShop.Core.dll
+C:\Users\maxwe\Desktop\DevMax\Projetos\LuShop\LuShop.Core\obj\Debug\net10.0\refint\LuShop.Core.dll
+C:\Users\maxwe\Desktop\DevMax\Projetos\LuShop\LuShop.Core\obj\Debug\net10.0\LuShop.Core.pdb
+C:\Users\maxwe\Desktop\DevMax\Projetos\LuShop\LuShop.Core\obj\Debug\net10.0\ref\LuShop.Core.dll

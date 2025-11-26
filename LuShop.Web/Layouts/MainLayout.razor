@@ -1,0 +1,98 @@
+﻿@using LuShop.Web.Components.Identity
+@inherits LayoutComponentBase
+
+@* --- PROVEDORES GLOBAIS --- *@
+@* O tema agora vem da classe estática Configuration *@
+<MudThemeProvider @bind-IsDarkMode="_isDarkMode" Theme="Configuration.Theme" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+<MudPopoverProvider /> @* CORREÇÃO DO ERRO ANTERIOR *@
+
+<MudLayout>
+    @* --- BARRA SUPERIOR (APP BAR) --- *@
+    <MudAppBar Elevation="0" Color="Color.Surface" Class="border-b-1 mud-border-lines-default" Fixed="true">
+        
+        <MudIconButton Icon="@Icons.Material.TwoTone.Menu"
+                       Color="Color.Inherit"
+                       Edge="Edge.Start"
+                       OnClick="@((e) => DrawerToggle())" />
+
+        <MudText Typo="Typo.h6" Class="ml-4 text-uppercase" Color="Color.Primary">
+            Luciana Rommanel
+        </MudText>
+
+        <MudSpacer />
+
+        <AuthorizeView>
+            <Authorized Context="authContext">
+                <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                    <MudChip T="object"
+                             Variant="Variant.Text"
+                             Color="Color.Secondary"
+                             Class="mr-4">
+                        <MudIcon Icon="@Icons.Material.Outlined.Person" Size="Size.Small" Class="mr-1"/>
+                        <MudText Typo="Typo.body2">@authContext.User.Identity?.Name</MudText>
+                    </MudChip>
+                </MudHidden>
+
+                <MudTooltip Text="Sair">
+                    <MudIconButton Icon="@Icons.Material.TwoTone.Logout"
+                                   Color="Color.Error"
+                                   Href="/logout" />
+                </MudTooltip>
+            </Authorized>
+            <NotAuthorized Context="authContext">
+                <MudButton Href="/login"
+                           Variant="Variant.Outlined"
+                           Color="Color.Primary"
+                           StartIcon="@Icons.Material.TwoTone.Login"
+                           Class="ml-4 rounded-pill">
+                    Entrar
+                </MudButton>
+            </NotAuthorized>
+        </AuthorizeView>
+
+        <MudTooltip Text="@(_isDarkMode ? "Modo Claro" : "Modo Escuro")">
+            <MudIconButton Icon="@(_isDarkMode ? @Icons.Material.TwoTone.LightMode : @Icons.Material.TwoTone.DarkMode)"
+                           Color="Color.Inherit"
+                           OnClick="@(() => _isDarkMode = !_isDarkMode)"
+                           Class="ml-2" />
+        </MudTooltip>
+    </MudAppBar>
+
+    @* --- BARRA LATERAL (DRAWER) --- *@
+    <MudDrawer @bind-Open="_drawerOpen" 
+               ClipMode="DrawerClipMode.Always" 
+               Elevation="0" 
+               Variant="DrawerVariant.Responsive"
+               Class="border-r-1 mud-border-lines-default">
+        
+        <MudDrawerHeader Class="d-flex align-center justify-center pa-4 my-2">
+            <MudAvatar Color="Color.Primary" Variant="Variant.Outlined" Size="Size.Large">
+                <MudIcon Icon="@Icons.Material.TwoTone.Diamond" Size="Size.Medium"/>
+            </MudAvatar>
+            <MudText Typo="Typo.button" Color="Color.Primary" Class="ml-3 font-weight-bold">
+                MENU
+            </MudText>
+        </MudDrawerHeader>
+        <NavMenu/>
+    </MudDrawer>
+
+    @* --- CONTEÚDO PRINCIPAL --- *@
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.Large" Class="mt-8 mb-16">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    private bool _isDarkMode = Configuration.ThemeMode; 
+    private bool _drawerOpen = true;
+
+    private void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+        Configuration.ThemeMode = _isDarkMode;
+    }
+}

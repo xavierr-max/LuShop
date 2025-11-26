@@ -1,0 +1,165 @@
+﻿@page "/registro"
+@layout HeadlessLayout
+@inherits RegisterPage
+
+<PageTitle>Luciana Rommanel - Cadastro</PageTitle>
+
+<MudGrid Spacing="0" Style="height: 100vh; width: 100vw; margin: 0;">
+
+    @* --- LADO ESQUERDO: Branding (A "Capa de Revista") --- *@
+    @* Oculto em celulares para dar foco ao formulário *@
+    <MudHidden Breakpoint="Breakpoint.Xs">
+        @* Container Principal com Gradiente de Luxo e Classes Utilitárias *@
+        <MudItem sm="5" md="6" lg="7"
+                 Class="d-flex flex-column justify-center align-center relative"
+                 Style="background: linear-gradient(135deg, var(--mud-palette-secondary) 0%, var(--mud-palette-primary-darken) 150%); 
+                    overflow: hidden;">
+        
+            @* Padrão de Fundo (Pattern) - Pontilhismo sutil *@
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+                    background-image: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px); 
+                    background-size: 30px 30px; 
+                    opacity: 0.6;"></div>
+
+            @* Conteúdo Centralizado (com wrapper para animação e z-index) *@
+            <div class="d-flex flex-column align-center z-10 animate-fade-in">
+            
+                @* Avatar com Borda Translúcida *@
+                <MudAvatar Style="height: 160px; width: 160px; border: 4px solid rgba(255,255,255,0.2);" 
+                           Class="elevation-8 mb-6 bg-white">
+                    <MudImage Src="imgs/icon.jpg" Alt="Logo" ObjectFit="ObjectFit.Cover" />
+                </MudAvatar>
+
+                @* Título com Tipografia Editorial e Sombra *@
+                <MudText Typo="Typo.h3" 
+                         Align="Align.Center"
+                         Style="color: white; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                    Luciana Rommanel
+                </MudText>
+
+                @* Subtítulo mais leve e legível *@
+                <MudText Typo="Typo.h6" 
+                         Align="Align.Center"
+                         Style="color: rgba(255,255,255,0.9); font-weight: 300; letter-spacing: 0.05em; margin-top: 8px;">
+                    Onde sua beleza encontra o brilho perfeito!
+                </MudText>
+            </div>
+        
+        </MudItem>
+    </MudHidden>
+
+    @* --- LADO DIREITO: O Formulário --- *@
+    <MudItem xs="12" sm="7" md="6" lg="5" 
+             Class="d-flex align-center justify-center pa-8" 
+             Style="background-color: var(--mud-palette-surface);">
+        
+        <div style="width: 100%; max-width: 400px;">
+
+            @* Cabeçalho Mobile (Só aparece se a esquerda sumir) *@
+            <MudHidden Breakpoint="Breakpoint.SmAndUp">
+                <div class="d-flex justify-center mb-8">
+                    <MudAvatar Size="Size.Large" Color="Color.Secondary" Variant="Variant.Filled">
+                        <MudIcon Icon="@Icons.Material.Filled.PersonAdd" />
+                    </MudAvatar>
+                </div>
+            </MudHidden>
+
+            @* Títulos do Formulário *@
+            <MudText Typo="Typo.h4" Class="mb-2" Color="Color.Primary" Style="font-weight: 700;">
+                Criar Conta
+            </MudText>
+            <MudText Typo="Typo.body1" Class="mb-8 mud-text-secondary">
+                Preencha os dados abaixo para iniciar sua jornada.
+            </MudText>
+
+            <EditForm Model="@InputModel" OnValidSubmit="OnValidSubmitAsync">
+                <DataAnnotationsValidator />
+
+                <MudStack Spacing="4">
+                    
+                    @* Campo E-mail (Estilo Minimalista Variant.Text) *@
+                    <MudTextField Label="E-mail"
+                                  @bind-Value="InputModel.Email"
+                                  For="@(() => InputModel.Email)"
+                                  Variant="Variant.Text" 
+                                  InputType="InputType.Email"
+                                  Adornment="Adornment.Start"
+                                  AdornmentIcon="@Icons.Material.Outlined.Email"
+                                  Class="mb-2" />
+
+                    @* Campo Senha (Estilo Minimalista Variant.Text) *@
+                    <MudTextField Label="Senha"
+                                  @bind-Value="InputModel.Password"
+                                  For="@(() => InputModel.Password)"
+                                  Variant="Variant.Text"
+                                  InputType="@_passwordInputType"
+                                  Adornment="Adornment.End"
+                                  AdornmentIcon="@_passwordInputIcon"
+                                  OnAdornmentClick="TogglePasswordVisibility"
+                                  HelperText="Escolha uma senha segura" />
+
+                    @* Botão de Ação (Retangular e Flat) *@
+                    <MudButton ButtonType="ButtonType.Submit"
+                               Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               Size="Size.Large"
+                               FullWidth="true"
+                               Disabled="@IsBusy"
+                               Class="py-3 mt-6 rounded-0 elevation-0"
+                               Style="font-weight: 700; letter-spacing: 1px;">
+                        @if (IsBusy)
+                        {
+                            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" Color="Color.Surface"/>
+                            <MudText Class="ms-2">CADASTRANDO...</MudText>
+                        }
+                        else
+                        {
+                            <MudText>FINALIZAR CADASTRO</MudText>
+                        }
+                    </MudButton>
+
+                </MudStack>
+            </EditForm>
+
+            <MudDivider Class="my-8" />
+
+            @* Rodapé com Link para Login *@
+            <MudText Align="Align.Center" Typo="Typo.body2" Class="mud-text-secondary">
+                Já possui uma conta?
+            </MudText>
+            
+            <div class="d-flex justify-center mt-2">
+                <MudButton Href="/login" 
+                           Variant="Variant.Text" 
+                           Color="Color.Secondary" 
+                           Style="font-weight: 700;">
+                    FAZER LOGIN
+                </MudButton>
+            </div>
+
+        </div>
+    </MudItem>
+</MudGrid>
+
+@code {
+    // Lógica visual para toggle de senha (UI Only)
+    bool _passwordVisibility;
+    InputType _passwordInputType = InputType.Password;
+    string _passwordInputIcon = Icons.Material.Outlined.VisibilityOff;
+
+    void TogglePasswordVisibility()
+    {
+        if (_passwordVisibility)
+        {
+            _passwordVisibility = false;
+            _passwordInputIcon = Icons.Material.Outlined.VisibilityOff;
+            _passwordInputType = InputType.Password;
+        }
+        else
+        {
+            _passwordVisibility = true;
+            _passwordInputIcon = Icons.Material.Outlined.Visibility;
+            _passwordInputType = InputType.Text;
+        }
+    }
+}

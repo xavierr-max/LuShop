@@ -1,0 +1,54 @@
+﻿@using LuShop.Web.Components.Identity
+@inherits LayoutComponentBase
+
+@* Provedores essenciais *@
+<MudThemeProvider @bind-IsDarkMode="_isDarkMode" Theme="Configuration.Theme"/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+<MudPopoverProvider/>
+
+<MudLayout>
+    @* AppBar FLUTUANTE e TRANSPARENTE 
+       Isso permite que o fundo da tela de login (gradiente ou cor) preencha o topo.
+    *@
+    <MudAppBar Elevation="0" Color="Color.Transparent" Fixed="true" Class="px-4 py-2">
+
+        @* Marca Discreta no Topo (Opcional, pois já tem grande no centro da tela) *@
+        <MudText Typo="Typo.h6" Class="ml-2 d-none d-sm-flex" 
+                 Style="font-weight: 300; letter-spacing: 0.2rem; text-transform: uppercase; font-size: 0.9rem;">
+            LUCIANA ROMMANEL
+        </MudText>
+
+        <MudSpacer/>
+        
+        @* BOTÃO DE TEMA (SOL / LUA) 
+            Muito mais elegante que um Switch padrão.
+        *@
+        <MudTooltip Text="@(_isDarkMode ? "Mudar para Claro" : "Mudar para Escuro")">
+            <MudIconButton OnClick="@ToggleTheme"
+                           Icon="@(_isDarkMode ? Icons.Material.Outlined.LightMode : Icons.Material.Outlined.DarkMode)"
+                           Color="Color.Inherit"
+                           Edge="Edge.End" 
+                           Class="mr-2"/>
+        </MudTooltip>
+
+    </MudAppBar>
+
+    @* CONTEÚDO
+       Removemos paddings excessivos para permitir layouts de tela cheia (100vh)
+    *@
+    <MudMainContent Class="pa-0" Style="height: 100vh; overflow-y: auto;">
+        @Body
+    </MudMainContent>
+</MudLayout>
+
+
+@code {
+    private bool _isDarkMode = Configuration.ThemeMode; // Começa escuro por padrão (opcional)
+
+    private void ToggleTheme()
+    {
+        _isDarkMode = !_isDarkMode;
+        Configuration.ThemeMode = _isDarkMode;
+    }
+}
