@@ -1,34 +1,33 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\maxwe\\Desktop\\DevMax\\Projetos\\LuShop\\LuShop.Api\\LuShop.Api.csproj": {}
+    "C:\\Users\\MaxwellMX\\OneDrive\\Área de Trabalho\\max\\lushop-repo\\LuShop\\LuShop.Api\\LuShop.Api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\maxwe\\Desktop\\DevMax\\Projetos\\LuShop\\LuShop.Api\\LuShop.Api.csproj": {
+    "C:\\Users\\MaxwellMX\\OneDrive\\Área de Trabalho\\max\\lushop-repo\\LuShop\\LuShop.Api\\LuShop.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\maxwe\\Desktop\\DevMax\\Projetos\\LuShop\\LuShop.Api\\LuShop.Api.csproj",
+        "projectUniqueName": "C:\\Users\\MaxwellMX\\OneDrive\\Área de Trabalho\\max\\lushop-repo\\LuShop\\LuShop.Api\\LuShop.Api.csproj",
         "projectName": "LuShop.Api",
-        "projectPath": "C:\\Users\\maxwe\\Desktop\\DevMax\\Projetos\\LuShop\\LuShop.Api\\LuShop.Api.csproj",
-        "packagesPath": "C:\\Users\\maxwe\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\maxwe\\Desktop\\DevMax\\Projetos\\LuShop\\LuShop.Api\\obj\\",
+        "projectPath": "C:\\Users\\MaxwellMX\\OneDrive\\Área de Trabalho\\max\\lushop-repo\\LuShop\\LuShop.Api\\LuShop.Api.csproj",
+        "packagesPath": "C:\\Users\\MaxwellMX\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\MaxwellMX\\OneDrive\\Área de Trabalho\\max\\lushop-repo\\LuShop\\LuShop.Api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\maxwe\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\MaxwellMX\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\maxwe\\Desktop\\DevMax\\Projetos\\LuShop\\LuShop.Core\\LuShop.Core.csproj": {
-                "projectPath": "C:\\Users\\maxwe\\Desktop\\DevMax\\Projetos\\LuShop\\LuShop.Core\\LuShop.Core.csproj"
+              "C:\\Users\\MaxwellMX\\OneDrive\\Área de Trabalho\\max\\lushop-repo\\LuShop\\LuShop.Core\\LuShop.Core.csproj": {
+                "projectPath": "C:\\Users\\MaxwellMX\\OneDrive\\Área de Trabalho\\max\\lushop-repo\\LuShop\\LuShop.Core\\LuShop.Core.csproj"
               }
             }
           }
@@ -99,23 +98,22 @@
         }
       }
     },
-    "C:\\Users\\maxwe\\Desktop\\DevMax\\Projetos\\LuShop\\LuShop.Core\\LuShop.Core.csproj": {
+    "C:\\Users\\MaxwellMX\\OneDrive\\Área de Trabalho\\max\\lushop-repo\\LuShop\\LuShop.Core\\LuShop.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\maxwe\\Desktop\\DevMax\\Projetos\\LuShop\\LuShop.Core\\LuShop.Core.csproj",
+        "projectUniqueName": "C:\\Users\\MaxwellMX\\OneDrive\\Área de Trabalho\\max\\lushop-repo\\LuShop\\LuShop.Core\\LuShop.Core.csproj",
         "projectName": "LuShop.Core",
-        "projectPath": "C:\\Users\\maxwe\\Desktop\\DevMax\\Projetos\\LuShop\\LuShop.Core\\LuShop.Core.csproj",
-        "packagesPath": "C:\\Users\\maxwe\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\maxwe\\Desktop\\DevMax\\Projetos\\LuShop\\LuShop.Core\\obj\\",
+        "projectPath": "C:\\Users\\MaxwellMX\\OneDrive\\Área de Trabalho\\max\\lushop-repo\\LuShop\\LuShop.Core\\LuShop.Core.csproj",
+        "packagesPath": "C:\\Users\\MaxwellMX\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\MaxwellMX\\OneDrive\\Área de Trabalho\\max\\lushop-repo\\LuShop\\LuShop.Core\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\maxwe\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\MaxwellMX\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
