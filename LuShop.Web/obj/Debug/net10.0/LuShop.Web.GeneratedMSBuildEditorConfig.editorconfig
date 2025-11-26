@@ -20,57 +20,57 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = browser
 build_property.RootNamespace = LuShop.Web
 build_property.RootNamespace = LuShop.Web
-build_property.ProjectDir = C:\Users\maxwe\Desktop\DevMax\Projetos\LuShop\LuShop.Web\
+build_property.ProjectDir = C:\Users\MaxwellMX\OneDrive\Área de Trabalho\max\lushop-repo\LuShop\LuShop.Web\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = false
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\maxwe\Desktop\DevMax\Projetos\LuShop\LuShop.Web
+build_property.MSBuildProjectDirectory = C:\Users\MaxwellMX\OneDrive\Área de Trabalho\max\lushop-repo\LuShop\LuShop.Web
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/maxwe/Desktop/DevMax/Projetos/LuShop/LuShop.Web/App.razor]
+[C:/Users/MaxwellMX/OneDrive/Área de Trabalho/max/lushop-repo/LuShop/LuShop.Web/App.razor]
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/maxwe/Desktop/DevMax/Projetos/LuShop/LuShop.Web/Components/Identity/LoginRedirect.razor]
+[C:/Users/MaxwellMX/OneDrive/Área de Trabalho/max/lushop-repo/LuShop/LuShop.Web/Components/Identity/LoginRedirect.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xJZGVudGl0eVxMb2dpblJlZGlyZWN0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/maxwe/Desktop/DevMax/Projetos/LuShop/LuShop.Web/Components/NavMenu.razor]
+[C:/Users/MaxwellMX/OneDrive/Área de Trabalho/max/lushop-repo/LuShop/LuShop.Web/Components/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xOYXZNZW51LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/maxwe/Desktop/DevMax/Projetos/LuShop/LuShop.Web/Layouts/HeadlessLayout.razor]
+[C:/Users/MaxwellMX/OneDrive/Área de Trabalho/max/lushop-repo/LuShop/LuShop.Web/Layouts/HeadlessLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = TGF5b3V0c1xIZWFkbGVzc0xheW91dC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/maxwe/Desktop/DevMax/Projetos/LuShop/LuShop.Web/Layouts/MainLayout.razor]
+[C:/Users/MaxwellMX/OneDrive/Área de Trabalho/max/lushop-repo/LuShop/LuShop.Web/Layouts/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = TGF5b3V0c1xNYWluTGF5b3V0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/maxwe/Desktop/DevMax/Projetos/LuShop/LuShop.Web/Pages/Home.razor]
+[C:/Users/MaxwellMX/OneDrive/Área de Trabalho/max/lushop-repo/LuShop/LuShop.Web/Pages/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9tZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/maxwe/Desktop/DevMax/Projetos/LuShop/LuShop.Web/Pages/Identity/Login.razor]
+[C:/Users/MaxwellMX/OneDrive/Área de Trabalho/max/lushop-repo/LuShop/LuShop.Web/Pages/Identity/Login.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSWRlbnRpdHlcTG9naW4ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/maxwe/Desktop/DevMax/Projetos/LuShop/LuShop.Web/Pages/Identity/Logout.razor]
+[C:/Users/MaxwellMX/OneDrive/Área de Trabalho/max/lushop-repo/LuShop/LuShop.Web/Pages/Identity/Logout.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSWRlbnRpdHlcTG9nb3V0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/maxwe/Desktop/DevMax/Projetos/LuShop/LuShop.Web/Pages/Identity/Register.razor]
+[C:/Users/MaxwellMX/OneDrive/Área de Trabalho/max/lushop-repo/LuShop/LuShop.Web/Pages/Identity/Register.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSWRlbnRpdHlcUmVnaXN0ZXIucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/maxwe/Desktop/DevMax/Projetos/LuShop/LuShop.Web/Pages/Teste.razor]
+[C:/Users/MaxwellMX/OneDrive/Área de Trabalho/max/lushop-repo/LuShop/LuShop.Web/Pages/Teste.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGVzdGUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/maxwe/Desktop/DevMax/Projetos/LuShop/LuShop.Web/_Imports.razor]
+[C:/Users/MaxwellMX/OneDrive/Área de Trabalho/max/lushop-repo/LuShop/LuShop.Web/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 

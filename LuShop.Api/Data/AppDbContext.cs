@@ -18,9 +18,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
         IdentityUserToken<long>
     >(options)
 {
-    public DbSet<Category> Categories { get; set; }
-    public DbSet<Piece> Piece { get; set; }
-
     //mapeia todas as classes que possuem o IEntityTypeConfiguration<>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
