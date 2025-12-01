@@ -1,0 +1,17 @@
+﻿<MudNavMenu Class="pt-2">
+    <MudText Typo="Typo.caption" Class="ml-4 mt-2 mb-1 mud-text-secondary">GERAL</MudText>
+    <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Dashboard">Dashboard</MudNavLink>
+    <MudNavLink Href="/catalogo" Icon="@Icons.Material.Outlined.Storefront">Catálogo</MudNavLink>
+
+    <AuthorizeView Policy="Admin">
+        <Authorized>
+            <MudText Typo="Typo.caption" Class="ml-4 mt-4 mb-1 mud-text-secondary">GESTÃO</MudText>
+            <MudNavLink Href="/produtos" Icon="@Icons.Material.Outlined.Inventory2">Produtos</MudNavLink>
+            <MudNavLink Href="/categorias" Icon="@Icons.Material.Outlined.Category">Categorias</MudNavLink>
+            <MudNavLink Href="/vendas" Icon="@Icons.Material.Outlined.ReceiptLong">Vendas</MudNavLink>
+        </Authorized>
+    </AuthorizeView>
+    <MudDivider Class="my-4 mx-4"/>
+
+    <MudNavLink Href="/configuracoes" Icon="@Icons.Material.Outlined.Settings">Configurações</MudNavLink>
+</MudNavMenu>

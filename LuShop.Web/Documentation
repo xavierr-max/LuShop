@@ -1,0 +1,91 @@
+﻿cmd -> 
+-dotnet add package MudBlazor
+-dotnet add package Microsoft.Extensions.Http
+-dotnet add reference ../Dima.Core
+-dotnet add package Microsoft.AspNetCore.Components.WebAssembly.Authentication
+-dotnet workload install wasm-tools
+    dotnet workload update
+
+
+//Configuracao Mud, HttpClient
+
+    @using Dima.Web
+
+    @using System.ComponentModel.DataAnnotations
+    
+    Implementação de Fontes no Index.html
+
+    Implementação do MudBlazor (builder, @using, pacote, index)
+    
+    modificação no app.css
+    
+    exclusão do boostrap, lib, sample-data
+    
+    adaptando o index html para o MudBlazor
+    
+    Criação do Configuration
+    
+        programando tema 
+        
+    programando MainLayout
+    
+    Criação do HeadLessLayout (@using)
+    
+--
+    
+    Criação do IAccountHandler no Core
+    
+    Criação dos Modelo (User) no Dima.Core
+    
+    Criação do appsettings.json
+    
+        Criação do BackendUrl
+    
+    Implementação com Configuration do BackendUrl no Program (builder)
+    
+    Implementação com Configuration do HttpClient no Program (pacote, builder, @using)
+    
+    Incrementar o valor da porta do FrontEnd no appsettings.json da API
+    
+    Criação do CookieHandler
+    
+    Criação do ICookieAuthenticationStateProvider
+    
+    Criação do CookieAuthenticationStateProvider
+    
+    Implementação do CookieHandler e ICookieAuthenticationStateProvider no Program (builder)
+    
+    Implementação do CascadingAuthenticationState no App.razor
+    
+    Implementa o wasm-tools na aplicação (pacote)
+    
+    Criação do AccountHandler
+    
+    Implementação do IAccountHandler, AccountHandler no Program (builder)
+    
+    Criação do Login.razor
+    
+    Colocando autorizacao no MainLayout
+    
+    Criação do Register.razor
+    
+    Criação do Logout.razor
+    
+    alterando o AddAuthorization do Program
+    
+    colocando autorizacao no NavMenu
+    
+Modelando Dominios Ricos
+    
+    {
+      "email": "lu@gmail.com",
+      "password": "v4@2Uq3<uZ(f"
+    }
+
+    
+    
+    
+    
+
+    
+    
