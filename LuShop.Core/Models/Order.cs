@@ -19,7 +19,7 @@ public class Order
     public Voucher? Voucher { get; set; }
 
     public string UserId { get; set; } = string.Empty;
-    
+
     public List<OrderItem> Items { get; set; } = new();
 
     // O Total pode continuar sendo calculado automaticamente para facilitar
@@ -34,7 +34,7 @@ public class Order
             {
                 totalItems = Items.Sum(x => x.Price * x.Quantity);
             }
-            
+
             return totalItems - (Voucher?.Amount ?? 0);
         }
     }

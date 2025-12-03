@@ -1,6 +1,8 @@
 ﻿using LuShop.Api.Data;
+using LuShop.Api.Handlers;
 using LuShop.Api.Models;
 using LuShop.Core;
+using LuShop.Core.Handlers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -73,6 +75,8 @@ public static class BuilderExtension
 
     public static void AddServices(this WebApplicationBuilder builder)
     {
-        // Aqui você registrará seus Handlers/Services no futuro
+        builder
+            .Services
+            .AddTransient<IOrderHandler, OrderHandler>();
     }
 }
