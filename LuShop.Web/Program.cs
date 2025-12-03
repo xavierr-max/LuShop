@@ -1,3 +1,4 @@
+using System.Globalization;
 using LuShop.Core.Handlers;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -10,6 +11,12 @@ using MudBlazor.Services;
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 Configuration.BackendUrl = builder.Configuration.GetValue<string>("BackendUrl") ?? string.Empty;
+
+var culture = new CultureInfo("pt-BR");
+// Define a cultura padrão para formatação (datas, números, moeda)
+CultureInfo.DefaultThreadCurrentCulture = culture;
+// Define a cultura padrão para recursos de UI (como strings localizadas)
+CultureInfo.DefaultThreadCurrentUICulture = culture;
 
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");

@@ -9,10 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuShop.Api", "LuShop.Api\Lu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuShop.Web", "LuShop.Web\LuShop.Web.csproj", "{81F77BB1-0BDB-40B5-B015-5D45C2637F6B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lushop.Shared", "Lushop.Shared", "{2471FBBA-02C7-B36F-099B-249C97406F1F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuShop.Shared", "Lushop.Shared\LuShop.Shared.csproj", "{88882E43-29BA-4844-A9C6-D25608485C69}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,23 +55,8 @@ Global
 		{81F77BB1-0BDB-40B5-B015-5D45C2637F6B}.Release|x64.Build.0 = Release|Any CPU
 		{81F77BB1-0BDB-40B5-B015-5D45C2637F6B}.Release|x86.ActiveCfg = Release|Any CPU
 		{81F77BB1-0BDB-40B5-B015-5D45C2637F6B}.Release|x86.Build.0 = Release|Any CPU
-		{88882E43-29BA-4844-A9C6-D25608485C69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{88882E43-29BA-4844-A9C6-D25608485C69}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{88882E43-29BA-4844-A9C6-D25608485C69}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{88882E43-29BA-4844-A9C6-D25608485C69}.Debug|x64.Build.0 = Debug|Any CPU
-		{88882E43-29BA-4844-A9C6-D25608485C69}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{88882E43-29BA-4844-A9C6-D25608485C69}.Debug|x86.Build.0 = Debug|Any CPU
-		{88882E43-29BA-4844-A9C6-D25608485C69}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{88882E43-29BA-4844-A9C6-D25608485C69}.Release|Any CPU.Build.0 = Release|Any CPU
-		{88882E43-29BA-4844-A9C6-D25608485C69}.Release|x64.ActiveCfg = Release|Any CPU
-		{88882E43-29BA-4844-A9C6-D25608485C69}.Release|x64.Build.0 = Release|Any CPU
-		{88882E43-29BA-4844-A9C6-D25608485C69}.Release|x86.ActiveCfg = Release|Any CPU
-		{88882E43-29BA-4844-A9C6-D25608485C69}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{88882E43-29BA-4844-A9C6-D25608485C69} = {2471FBBA-02C7-B36F-099B-249C97406F1F}
 	EndGlobalSection
 EndGlobal

@@ -71,11 +71,19 @@
     
     Criação do Logout.razor
     
+    Habilitar no csproj o <BlazorWebAssemblyLoadGlobalizationData> (builder)
+    
+    Implementacao dos CultureInfo no Program
+    
+VOLTA PARA API
+    
     alterando o AddAuthorization do Program
     
     colocando autorizacao no NavMenu
     
-Modelando Dominios Ricos
+VOLTA PARA API
+    
+
     
     {
       "email": "lu@gmail.com",

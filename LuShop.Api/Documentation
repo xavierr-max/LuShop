@@ -64,6 +64,14 @@ IR PARA WEB
     alterando o AddAuthorization do BuilderExtensions 
         confira se existe .AddRoles<IdentityRole<long>>() no AddDataContexts
     
+IR PARA WEB
+
+    criacao dos modelos no Core
+    
+    criacao do enums no Core
+    
+    criacao dos requests dos modelos no Core
+
     
     
     
