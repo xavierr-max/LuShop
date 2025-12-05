@@ -1,5 +1,5 @@
 ﻿using LuShop.Core.Models;
-using LuShop.Core.Requests.Order;
+using LuShop.Core.Requests.Orders;
 using LuShop.Core.Responses;
 
 namespace LuShop.Core.Handlers;

@@ -1,0 +1,32 @@
+﻿@using LuShop.Core.Models
+
+<MudAutocomplete T="Product"
+                 Label="Pesquisar Produto..."
+                 SearchFunc="SearchAsync" 
+                 ValueChanged="OnProductSelected"
+                 ToStringFunc="@(e => e?.Title)"
+                 Adornment="Adornment.Start"
+                 AdornmentIcon="@Icons.Material.Filled.Search"
+                 ResetValueOnEmptyText="true"
+                 CoerceText="true"
+                 CoerceValue="false"
+                 Placeholder="Digite o nome do produto"
+                 Variant="Variant.Outlined" 
+                 Margin="Margin.Dense">
+    
+    <ItemTemplate Context="product">
+        <MudStack Row="true" AlignItems="AlignItems.Center">
+            @* ✅ CORREÇÃO AQUI: MudAvatar envolvendo MudImage *@
+            @if (!string.IsNullOrEmpty(product.ImageUrl))
+            {
+                <MudAvatar Size="Size.Small">
+                    <MudImage Src="@product.ImageUrl" ObjectFit="ObjectFit.Cover"/>
+                </MudAvatar>
+            }
+            <MudText>@product.Title</MudText>
+            <MudSpacer />
+            <MudText Typo="Typo.caption">@product.Price.ToString("C")</MudText>
+        </MudStack>
+    </ItemTemplate>
+
+</MudAutocomplete>

@@ -2,7 +2,7 @@
 using LuShop.Core.Enums;
 using LuShop.Core.Handlers;
 using LuShop.Core.Models;
-using LuShop.Core.Requests.Order;
+using LuShop.Core.Requests.Orders;
 using LuShop.Core.Responses;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,16 +1,22 @@
 ﻿<MudNavMenu Class="pt-2">
+    
     <MudText Typo="Typo.caption" Class="ml-4 mt-2 mb-1 mud-text-secondary">GERAL</MudText>
     <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Dashboard">Dashboard</MudNavLink>
-    <MudNavLink Href="/catalogo" Icon="@Icons.Material.Outlined.Storefront">Catálogo</MudNavLink>
+    <MudNavLink Href="/catalogo" Icon="@Icons.Material.Outlined.Storefront">Ver Catálogo</MudNavLink>
+    
+    <MudDivider Class="my-4 mx-4"/>
 
     <AuthorizeView Policy="Admin">
         <Authorized>
-            <MudText Typo="Typo.caption" Class="ml-4 mt-4 mb-1 mud-text-secondary">GESTÃO</MudText>
-            <MudNavLink Href="/produtos" Icon="@Icons.Material.Outlined.Inventory2">Produtos</MudNavLink>
+            <MudText Typo="Typo.caption" Class="ml-4 mt-4 mb-1 mud-text-secondary">GESTÃO DE VENDAS</MudText>
+            
+            <MudNavLink Href="/produtos/adicionar" Icon="@Icons.Material.Outlined.AddBox">Adicionar Produto</MudNavLink>
+            <MudNavLink Href="/produtos/editar/{Slug}" Icon="@Icons.Material.Outlined.AddBox">Gerenciar Produto</MudNavLink>
             <MudNavLink Href="/categorias" Icon="@Icons.Material.Outlined.Category">Categorias</MudNavLink>
             <MudNavLink Href="/vendas" Icon="@Icons.Material.Outlined.ReceiptLong">Vendas</MudNavLink>
         </Authorized>
     </AuthorizeView>
+    
     <MudDivider Class="my-4 mx-4"/>
 
     <MudNavLink Href="/configuracoes" Icon="@Icons.Material.Outlined.Settings">Configurações</MudNavLink>

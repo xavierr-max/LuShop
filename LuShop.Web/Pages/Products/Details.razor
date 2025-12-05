@@ -1,0 +1,111 @@
+﻿@page "/produto/{Slug}"
+@inherits DetailsPage
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="py-8">
+    @if (IsLoading)
+    {
+        <div class="d-flex justify-center my-16">
+            <MudProgressCircular Indeterminate="true" Size="Size.Large" Color="Color.Primary" />
+        </div>
+    }
+    else if (Product is null)
+    {
+        <MudAlert Severity="Severity.Warning" Class="mb-4 rounded-xl">
+            Produto não encontrado ou indisponível no momento.
+        </MudAlert>
+        <MudButton Variant="Variant.Filled" 
+                   Color="Color.Secondary" 
+                   OnClick="GoBack"
+                   Size="Size.Large">
+            Voltar para a loja
+        </MudButton>
+    }
+    else
+    {
+        @* Cartão principal que abriga todo o conteúdo *@
+        <MudCard Elevation="16" Class="mx-auto rounded-xl" Style="max-width: 1200px;">
+            <MudGrid Spacing="0">
+                
+                @* --- COLUNA DA IMAGEM --- *@
+                <MudItem xs="12" md="7">
+                    <MudPaper Elevation="0" 
+                              Class="pa-6 d-flex justify-center align-center rounded-l-xl" 
+                              Style="min-height: 580px; background-color: var(--mud-palette-surface);">
+                        
+                        <MudImage Src="@ImageUrl"
+                                  Alt="@Product.Title"
+                                  Fluid="true"
+                                  Style="max-height: 100%; max-width: 100%; object-fit: contain;" />
+                    </MudPaper>
+                </MudItem>
+
+                @* --- COLUNA DOS DETALHES E AÇÕES --- *@
+                <MudItem xs="12" md="5" Class="pa-8">
+                    <MudStack Spacing="5">
+
+                        @* Título *@
+                        <MudText Typo="Typo.h5" Class="mt-2" Style="font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;">
+                            @Product.Title
+                        </MudText>
+                        
+                        <MudDivider Class="my-2" />
+
+                        @* PREÇO: CORRIGIDO PARA BRANCO/BRILHANTE (Color.Surface/Warning) *@
+                        <MudText Typo="Typo.h3" 
+                                 Color="Color.Warning" 
+                                 Class="mb-6" 
+                                 Style="font-weight: 800; letter-spacing: 0.05em;">
+                            @Product.Price.ToString("C")
+                        </MudText>
+
+                        @* Status e Categoria *@
+                        <div class="d-flex flex-wrap gap-2">
+                            <MudChip T="string" Color="Color.Success" Variant="Variant.Filled">
+                                <MudIcon Icon="@Icons.Material.Filled.Check" Size="Size.Small"/> Em estoque
+                            </MudChip>
+                            
+                            @if (Product.Category?.Title is { Length: > 0 } categoryTitle)
+                            {
+                                <MudChip T="string" Color="Color.Primary" Variant="Variant.Outlined">
+                                    <MudIcon Icon="@Icons.Material.Outlined.Category" Size="Size.Small"/> @categoryTitle
+                                </MudChip>
+                            }
+                        </div>
+
+                        <MudDivider Class="my-3" />
+
+                        @* Descrição *@
+                        <MudText Typo="Typo.body1" Class="mud-text-secondary" Style="line-height: 1.6;">
+                            @Product.Description
+                        </MudText>
+                        
+                        <MudSpacer />
+                        
+                        @* Botões de Ação *@
+                        <div class="d-flex gap-4 flex-column">
+                            
+                            @* Botão Principal em Warning (Dourado/Amarelo Brilhante) *@
+                            <MudButton Variant="Variant.Filled"
+                                       Color="Color.Warning" 
+                                       Size="Size.Large"
+                                       StartIcon="@Icons.Material.Filled.AddShoppingCart"
+                                       FullWidth="true"
+                                       Class="py-3 elevation-4">
+                                Adicionar ao Carrinho
+                            </MudButton>
+
+                            <MudButton Variant="Variant.Outlined"
+                                       Color="Color.Primary"
+                                       Size="Size.Large"
+                                       StartIcon="@Icons.Material.Outlined.CreditCard"
+                                       FullWidth="true"
+                                       Class="py-3">
+                                Comprar Agora
+                            </MudButton>
+                        </div>
+                    </MudStack>
+                </MudItem>
+            </MudGrid>
+        </MudCard>
+    }
+</MudContainer>

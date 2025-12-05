@@ -1,7 +1,113 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>LuShop | Catálogo</PageTitle>
 
-<h1>Hello, world!</h1>
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-8 mb-16">
+    
+    <MudText Typo="Typo.h4" GutterBottom="true" Align="Align.Center" Class="mb-8" Style="font-weight: 300;">
+        LANÇAMENTOS EXCLUSIVOS
+    </MudText>
 
-Welcome to your new app.
+    @if (IsBusy)
+    {
+        <MudGrid>
+            @for (int i = 0; i < 8; i++)
+            {
+                <MudItem xs="12" sm="6" md="4" lg="3">
+                    <MudCard Elevation="0" Outlined="true">
+                        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="200px" />
+                        <MudCardContent>
+                            <MudSkeleton Width="80%" Height="30px" Class="mb-2" />
+                            <MudSkeleton Width="40%" Height="20px" />
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+            }
+        </MudGrid>
+    }
+    // Estado Vazio (Nenhum produto encontrado)
+    else if (Products is null || !Products.Any())
+    {
+        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Class="mt-4">
+            Nenhum produto disponível no momento. Volte em breve!
+        </MudAlert>
+    }
+    // Listagem de Produtos
+    else
+    {
+        <MudGrid Spacing="4">
+            @foreach (var product in Products)
+            {
+                <MudItem xs="12" sm="6" md="4" lg="3">
+                    <MudCard Elevation="2" Class="h-100 d-flex flex-column product-card">
+                        
+                        @if (!string.IsNullOrEmpty(product.ImageUrl))
+                        {
+                            <MudCardMedia Image="@($"http://localhost:5047/{product.ImageUrl}")" Height="200" />
+                        }
+                        else
+                        {
+                            <div class="d-flex justify-center align-center mud-theme-secondary-background" style="height: 200px;">
+                                <MudIcon Icon="@Icons.Material.Outlined.ImageNotSupported" Size="Size.Large" Style="color: white; width: 64px; height: 64px;" />
+                            </div>
+                        }
+
+                        <MudCardContent Class="flex-grow-1">
+                            <MudText Typo="Typo.h6" Class="text-truncate">
+                                @product.Title
+                            </MudText>
+                            
+                            <MudText Typo="Typo.body2" Class="mud-text-secondary mt-1 text-truncate-2" Style="height: 40px;">
+                                @product.Description
+                            </MudText>
+                            
+                            <MudText Typo="Typo.h6" Color="Color.Primary" Class="mt-4">
+                                @product.Price.ToString("C")
+                            </MudText>
+                        </MudCardContent>
+
+                        <MudCardActions Class="d-flex justify-space-between pa-4">
+                            <MudButton Variant="Variant.Outlined" 
+                                       Color="Color.Secondary" 
+                                       Size="Size.Small"
+                                       Href="@($"/produto/{product.Slug}")">
+                                DETALHES
+                            </MudButton>
+
+                            <MudIconButton Icon="@Icons.Material.Filled.AddShoppingCart" 
+                                           Color="Color.Primary" 
+                                           Size="Size.Small" />
+                        </MudCardActions>
+                    </MudCard>
+                </MudItem>
+            }
+        </MudGrid>
+
+        <div class="d-flex justify-center mt-8">
+            <MudPagination Color="Color.Primary" 
+                           Count="@TotalPages" 
+                           Selected="@Request.PageNumber"
+                           SelectedChanged="OnPageChanged" />
+        </div>
+    }
+
+</MudContainer>
+
+<style>
+    /* Pequeno ajuste CSS para truncar texto em 2 linhas */
+    .text-truncate-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .product-card {
+        transition: transform 0.2s;
+    }
+    
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+</style>

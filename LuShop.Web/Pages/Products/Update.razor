@@ -1,0 +1,118 @@
+﻿@page "/produtos/editar/{Slug}"
+@inherits UpdatePage
+
+<MudContainer MaxWidth="MaxWidth.Small">
+    
+    <MudText Typo="Typo.h4" 
+             GutterBottom="true" 
+             Class="mt-8 mb-6 text-center">
+        Atualizar Item (@Slug)
+    </MudText>
+
+    @if (_isProductLoading)
+    {
+        <MudAlert Severity="Severity.Info" Class="d-flex align-center justify-center">
+            <MudProgressCircular Indeterminate="true" Class="me-2"/>
+            Carregando dados do produto...
+        </MudAlert>
+    }
+    else
+    {
+        <MudPaper Class="pa-8 ma-2 elevation-8 rounded-xl" Style="border-top: 5px solid var(--mud-palette-warning);">
+            
+            <MudForm @ref="_form" @bind-IsValid="@_success">
+                
+                @* ✅ CORREÇÃO: Usar @bind para elementos HTML nativos *@
+                <input type="hidden" @bind="_request.Id" />
+                
+                <MudTextField T="string" 
+                              Label="Nome do Produto" 
+                              @bind-Value="_request.Title" 
+                              Required="true" 
+                              RequiredError="O título é obrigatório." 
+                              Variant="Variant.Outlined"
+                              Class="mb-5"/>
+
+                <MudTextField T="string" 
+                              Label="Detalhes e Descrição" 
+                              Lines="3"
+                              @bind-Value="_request.Description" 
+                              Required="true" 
+                              RequiredError="A descrição é obrigatória."
+                              Variant="Variant.Outlined"
+                              Class="mb-7"/>
+
+                <MudGrid Spacing="4" Class="mb-7">
+                    <MudItem xs="12" sm="6">
+                        <MudNumericField @bind-Value="_request.Price" 
+                                         Label="Preço de Venda" 
+                                         Format="N2" 
+                                         Adornment="Adornment.Start" 
+                                         AdornmentIcon="@Icons.Material.Filled.AttachMoney" 
+                                         Required="true"
+                                         Variant="Variant.Outlined"/>
+                    </MudItem>
+                    
+                    <MudItem xs="12" sm="6">
+                        <MudNumericField @bind-Value="_request.CategoryId" 
+                                         Label="ID da Categoria" 
+                                         Required="true"
+                                         Min="1"
+                                         AdornmentIcon="@Icons.Material.Filled.Category"
+                                         Variant="Variant.Outlined"/>
+                    </MudItem>
+                </MudGrid>
+                
+                <div class="d-flex justify-space-between align-center mb-7">
+                    <MudSwitch @bind-Value="_request.IsActive" 
+                               Color="Color.Success" 
+                               Label="Item Ativo para Venda?" />
+
+                    <MudFileUpload T="IBrowserFile" FilesChanged="UploadImage">
+                        <ActivatorContent>
+                            <MudButton Variant="Variant.Text"
+                                       Color="Color.Primary"
+                                       StartIcon="@Icons.Material.Filled.PhotoCamera">
+                                Carregar Nova Imagem
+                            </MudButton>
+                        </ActivatorContent>
+                    </MudFileUpload>
+                </div>
+
+
+                @if (!string.IsNullOrEmpty(_imageBase64Preview))
+                {
+                    <MudText Typo="Typo.caption" Class="mt-3 mb-2 text-center text-grey">Pré-visualização da Mídia</MudText>
+                    <div class="d-flex justify-center mb-7">
+                        @* Usa o _imageBase64Preview, que será o URL (ou base64) do produto existente ou a nova imagem carregada*@
+                        <MudImage Src="@_imageBase64Preview" 
+                                  Height="150" 
+                                  Width="200"
+                                  ObjectFit="ObjectFit.Contain" 
+                                  Class="rounded-lg elevation-4 border-2 border-dashed border-grey-400 pa-2"/>
+                    </div>
+                }
+
+                <div class="d-flex justify-end mt-4">
+                    <MudButton Variant="Variant.Filled" 
+                               Color="Color.Warning" 
+                               Size="Size.Large"
+                               Class="px-8"
+                               Disabled="@(_isBusy || !_success)" 
+                               OnClick="OnSubmitAsync">
+                        @if (_isBusy)
+                        {
+                            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                            <MudText Class="ms-2">Salvando...</MudText>
+                        }
+                        else
+                        {
+                            <MudText>Salvar Alterações</MudText>
+                        }
+                    </MudButton>
+                </div>
+
+            </MudForm>
+        </MudPaper>
+    }
+</MudContainer>

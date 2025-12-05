@@ -10,46 +10,55 @@ using MudBlazor.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
+// Configuração da URL do Backend
 Configuration.BackendUrl = builder.Configuration.GetValue<string>("BackendUrl") ?? string.Empty;
 
+// Configuração de Cultura (R$ e Datas)
 var culture = new CultureInfo("pt-BR");
-// Define a cultura padrão para formatação (datas, números, moeda)
 CultureInfo.DefaultThreadCurrentCulture = culture;
-// Define a cultura padrão para recursos de UI (como strings localizadas)
 CultureInfo.DefaultThreadCurrentUICulture = culture;
 
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-// Security - Handler de Cookies para interceptar requisições
-builder.Services.AddScoped<CookieHandler>();
+// --- SEGURANÇA ---
 
-// Security - Autorização
+// 1. Handler de Cookies (Interceptador HTTP)
+builder.Services.AddTransient<CookieHandler>();
+
+// 2. Autorização (Policies)
 builder.Services.AddAuthorizationCore(options =>
 {
     options.AddPolicy("Admin", policy => 
-        // A MUDANÇA MÁGICA: 
-        // Use RequireRole em vez de RequireClaim. 
-        // O RequireRole verifica automaticamente tanto "Role" quanto a URL longa da Microsoft.
         policy.RequireRole("Admin"));
 });
 
-// Security - Autenticação
-// Garante que a mesma instância gerencie o estado de autenticação
+// 3. Autenticação (State Provider)
 builder.Services.AddScoped<CookieAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(x => 
     x.GetRequiredService<CookieAuthenticationStateProvider>());
 builder.Services.AddScoped<ICookieAuthenticationStateProvider>(x => 
     x.GetRequiredService<CookieAuthenticationStateProvider>());
 
-// MudBlazor
+// --- UI ---
 builder.Services.AddMudServices();
 
-// HttpClient
+// --- HTTP CLIENT & HANDLERS ---
+
+// 1. Configura o "Cliente Nomeado" (Factory)
+// Todos os handlers que pedirem httpClientFactory.CreateClient("lushop") vão receber
+// um cliente configurado com essa URL Base e com o CookieHandler anexado.
 builder.Services
-    .AddHttpClient(Configuration.HttpClientName, opt => { opt.BaseAddress = new Uri(Configuration.BackendUrl); })
+    .AddHttpClient(Configuration.HttpClientName, opt => 
+    { 
+        opt.BaseAddress = new Uri(Configuration.BackendUrl); 
+    })
     .AddHttpMessageHandler<CookieHandler>(); 
 
+// 2. Registra os Handlers da Aplicação
+// Como eles usam IHttpClientFactory internamente, basta registrá-los como Transient.
 builder.Services.AddTransient<IAccountHandler, AccountHandler>();
+builder.Services.AddTransient<IOrderHandler, OrderHandler>();  
+builder.Services.AddTransient<IProductHandler, ProductHandler>(); 
 
 await builder.Build().RunAsync();

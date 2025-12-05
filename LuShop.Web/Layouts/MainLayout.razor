@@ -1,12 +1,10 @@
-﻿@using LuShop.Web.Components.Identity
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 
 @* --- PROVEDORES GLOBAIS --- *@
-@* O tema agora vem da classe estática Configuration *@
 <MudThemeProvider @bind-IsDarkMode="_isDarkMode" Theme="Configuration.Theme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
-<MudPopoverProvider /> @* CORREÇÃO DO ERRO ANTERIOR *@
+<MudPopoverProvider />
 
 <MudLayout>
     @* --- BARRA SUPERIOR (APP BAR) --- *@
@@ -15,12 +13,24 @@
         <MudIconButton Icon="@Icons.Material.TwoTone.Menu"
                        Color="Color.Inherit"
                        Edge="Edge.Start"
-                       OnClick="@((e) => DrawerToggle())" />
+                       OnClick="DrawerToggle" />
 
-        <MudText Typo="Typo.h6" Class="ml-4 text-uppercase" Color="Color.Primary">
+        <MudText Typo="Typo.h6" Class="ml-4 text-uppercase" Color="Color.Primary" Style="white-space:nowrap;">
             Luciana Rommanel
         </MudText>
+        
+        @* 1. Spacer empurra a barra de pesquisa para o meio *@
+        <MudSpacer />
 
+        @* 2. Container da Barra de Pesquisa 
+              - style="width: 100%; max-width: 500px;" -> Define um tamanho agradável (nem muito curto, nem infinito).
+              - d-none d-sm-flex -> Oculta em telas muito pequenas (celular) para não quebrar o layout.
+        *@
+        <div class="d-none d-sm-flex align-center mx-4" style="width: 100%; max-width: 500px;">
+            <SearchBarComponent/>
+        </div>
+
+        @* 3. Spacer empurra os controles de usuário para a direita *@
         <MudSpacer />
 
         <AuthorizeView>
@@ -93,6 +103,5 @@
     private void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
-        Configuration.ThemeMode = _isDarkMode;
     }
 }

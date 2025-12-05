@@ -1,4 +1,5 @@
-﻿using LuShop.Api.Data;
+﻿using System.Text.Json.Serialization;
+using LuShop.Api.Data;
 using LuShop.Api.Handlers;
 using LuShop.Api.Models;
 using LuShop.Core;
@@ -72,11 +73,31 @@ public static class BuilderExtension
                     .AllowCredentials()
             ));
     }
+    
+    public static void AddJsonSerialization(this WebApplicationBuilder builder)
+    {
+        // Configuração para Minimal APIs (TypedResults, IResult)
+        builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
+        {
+            options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        });
+
+        // Configuração para Controllers Tradicionais (caso use algum)
+        builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            });
+    }
 
     public static void AddServices(this WebApplicationBuilder builder)
     {
         builder
             .Services
             .AddTransient<IOrderHandler, OrderHandler>();
+        
+        builder
+            .Services
+            .AddTransient<IProductHandler, ProductHandler>();
     }
 }

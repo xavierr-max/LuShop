@@ -1,0 +1,82 @@
+﻿@page "/produtos"
+@inherits ListProductPage
+
+<MudText Typo="Typo.h3" Class="mb-4">Produtos</MudText>
+
+@* Botão Novo Produto *@
+<div class="d-flex justify-end mb-4">
+    <MudButton Variant="Variant.Filled"
+               Color="Color.Primary"
+               StartIcon="@Icons.Material.TwoTone.Add"
+               Href="/produtos/adicionar">
+        NOVO PRODUTO
+    </MudButton>
+</div>
+
+@* Tabela de Listagem *@
+<MudDataGrid Items="@Products"
+             Filterable="true"
+             QuickFilter="Filter"
+             Hideable="true"
+             Loading="@IsBusy">
+
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Lista de Produtos</MudText>
+        <MudSpacer />
+        <MudTextField @bind-Value="SearchTerm"
+                      Placeholder="Pesquisar..."
+                      Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search"
+                      Immediate="true"
+                      Class="mt-0" />
+    </ToolBarContent>
+
+    <Columns>
+        @* ✅ CORREÇÃO 1: Imagens *@
+        @* Adicionamos a URL da API (localhost:5047) antes do caminho da imagem *@
+        <TemplateColumn Title="Imagem" Sortable="false">
+            <CellTemplate>
+                @if (!string.IsNullOrEmpty(context.Item.ImageUrl))
+                {
+                    <MudAvatar Rounded="true" Size="Size.Medium">
+                        <MudImage Src="@($"http://localhost:5047/{context.Item.ImageUrl}")" 
+                                  ObjectFit="ObjectFit.Cover"/>
+                    </MudAvatar>
+                }
+                else
+                {
+                    <MudIcon Icon="@Icons.Material.Outlined.ImageNotSupported" />
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        @* Propriedades Simples *@
+        <PropertyColumn Property="x => x.Title" Title="Nome" />
+        <PropertyColumn Property="x => x.Price" Title="Preço" Format="C" />
+
+        @* ✅ CORREÇÃO 2: Links (Slug) *@
+        @* A sintaxe @($". . .") garante que o C# substitua o Slug pelo valor real *@
+        <TemplateColumn CellClass="d-flex justify-end">
+            <CellTemplate>
+                
+                <MudTooltip Text="Editar">
+                    <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                                   Color="Color.Primary"
+                                   Href="@($"/produtos/editar/{context.Item.Slug}")" />
+                </MudTooltip>
+
+                <MudTooltip Text="Excluir">
+                    <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                   Color="Color.Error"
+                                   Href="@($"/produtos/deletar/{context.Item.Slug}")" />
+                </MudTooltip>
+
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+    
+    <PagerContent>
+        <MudDataGridPager T="Product" />
+    </PagerContent>
+    
+</MudDataGrid>
