@@ -1,11 +1,10 @@
 ﻿using LuShop.Core.Handlers;
 using LuShop.Core.Models;
 using LuShop.Core.Requests.Products;
-using Microsoft.AspNetCore.Components; // Necessário para ComponentBase
+using Microsoft.AspNetCore.Components;
 
-namespace LuShop.Web.Components; // Verifique se a pasta é Components mesmo
+namespace LuShop.Web.Components;
 
-// CORREÇÃO: Adicionado ': ComponentBase'
 public partial class SearchBarComponent : ComponentBase
 {
     #region Services
@@ -49,6 +48,19 @@ public partial class SearchBarComponent : ComponentBase
         {
             NavigationManager.NavigateTo($"/produto/{product.Slug}");
         }
+    }
+
+    // ✅ NOVO MÉTODO: Formata a URL para apontar para o Backend
+    private string GetImageUrl(string? imageUrl)
+    {
+        if (string.IsNullOrWhiteSpace(imageUrl))
+            return "https://placehold.co/100x100?text=No+Img"; // Placeholder pequeno para search
+        
+        if (imageUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+            return imageUrl;
+        
+        // Garante que a URL aponte para a API (Backend)
+        return $"{Configuration.BackendUrl}/{imageUrl.TrimStart('/')}";
     }
 
     #endregion

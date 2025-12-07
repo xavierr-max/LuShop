@@ -1,0 +1,84 @@
+﻿@page "/categorias/deletar/{Id:long}"
+@inherits DeleteCategoryPage
+
+<MudContainer MaxWidth="MaxWidth.Small">
+
+    <MudText Typo="Typo.h4"
+             GutterBottom="true"
+             Class="mt-8 mb-6 text-center text-error">
+        Confirmação de Exclusão de Categoria
+    </MudText>
+
+    @if (_isCategoryLoading)
+    {
+        <MudAlert Severity="Severity.Info" Class="d-flex align-center justify-center">
+            <MudProgressCircular Indeterminate="true" Class="me-2"/>
+            Carregando dados...
+        </MudAlert>
+    }
+    else if (_category is null)
+    {
+        <MudAlert Severity="Severity.Error">
+            Não foi possível carregar a categoria.
+            Tente novamente ou volte para a lista.
+        </MudAlert>
+    }
+    else
+    {
+        <MudPaper Class="pa-8 ma-2 elevation-8 rounded-xl" Style="border-top: 5px solid var(--mud-palette-error);">
+
+            <div class="mb-6 text-center">
+                <MudIcon Icon="@Icons.Material.Filled.Warning" Size="Size.Large" Color="Color.Error" Class="mb-3"/>
+
+
+                <MudText Typo="Typo.subtitle1" Class="text-error">
+                    Você está prestes a excluir permanentemente o item:
+                </MudText>
+
+                <MudText Typo="Typo.h5" Class="mt-2 text-primary">
+
+                    **@_category.Title**
+                </MudText>
+            </div>
+
+            <MudDivider Class="my-4"/>
+
+            <MudText Typo="Typo.body2" Class="text-center mb-6">
+                Esta ação é **irreversível**. Todos os dados associados serão perdidos.
+                Confirme a exclusão abaixo.
+            </MudText>
+
+
+            <div class="d-flex justify-space-between mt-4">
+
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Info"
+                           Size="Size.Large"
+                           Class="px-8"
+                           Disabled="@_isBusy"
+                           OnClick='@(() => Navigation.NavigateTo("/categorias"))'>
+                    Cancelar
+                </MudButton>
+
+                @* Chama o método de exclusão *@
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Error"
+                           Size="Size.Large"
+                           Class="px-8"
+                           Disabled="@_isBusy"
+                           OnClick="OnDeleteAsync">
+                    @if (_isBusy)
+                    {
+                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                        <MudText Class="ms-2">Excluindo...</MudText>
+                    }
+                    else
+                    {
+                        <MudText>Confirmar Exclusão</MudText>
+                    }
+                </MudButton>
+            </div>
+
+        </MudPaper>
+    }
+</MudContainer>

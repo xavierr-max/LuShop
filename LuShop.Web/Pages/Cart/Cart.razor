@@ -1,0 +1,148 @@
+﻿@page "/carrinho"
+@inherits CartPage
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-8 mb-8">
+    <MudText Typo="Typo.h4" GutterBottom="true" Class="mb-4"><b>Meu Carrinho</b></MudText>
+
+    @if (IsBusy)
+    {
+        <div class="d-flex justify-center align-center" style="height: 50vh;">
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+        </div>
+    }
+    else if (CartModel is null || !CartModel.Items.Any())
+    {
+        <div class="d-flex flex-column align-center justify-center mt-10">
+            <MudIcon Icon="@Icons.Material.Outlined.RemoveShoppingCart" Size="Size.Large" Color="Color.Default" Style="width: 100px; height: 100px;" />
+            <MudText Typo="Typo.h5" Class="mt-4">Seu carrinho está vazio</MudText>
+            <MudText Typo="Typo.body1" Class="mb-4">Que tal explorar nossos produtos?</MudText>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Href="/">Ir para a Loja</MudButton>
+        </div>
+    }
+    else
+    {
+        <MudGrid>
+            <MudItem xs="12" md="8">
+                <MudTable Items="@CartModel.Items" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="0" Outlined="true">
+                    <HeaderContent>
+                        <MudTh>Produto</MudTh>
+                        <MudTh>Preço</MudTh>
+                        <MudTh Style="text-align: center;">Quantidade</MudTh>
+                        <MudTh>Total</MudTh>
+                        <MudTh></MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Produto">
+                            <div class="d-flex align-center">
+                                <MudImage Src="@GetImageUrl(context.Product?.ImageUrl)" 
+                                          Height="60" 
+                                          Width="60" 
+                                          ObjectFit="ObjectFit.Cover" 
+                                          Class="rounded mr-4"
+                                          Alt="@context.Product?.Title" />
+                                <div>
+                                    <MudText Typo="Typo.subtitle1"><b>@context.Product?.Title</b></MudText>
+                                    <MudText Typo="Typo.caption">@context.Product?.Slug</MudText>
+                                </div>
+                            </div>
+                        </MudTd>
+                        <MudTd DataLabel="Preço">@context.Product?.Price.ToString("C")</MudTd>
+                        <MudTd DataLabel="Quantidade" Style="text-align: center;">
+                            <div class="d-flex justify-center align-center gap-2">
+                                <MudIconButton Icon="@Icons.Material.Filled.Remove" 
+                                               Size="Size.Small" 
+                                               OnClick="@(() => DecreaseQuantity(context))"
+                                               Disabled="@(context.Quantity <= 1)" />
+                                
+                                <MudText>@context.Quantity</MudText>
+                                
+                                <MudIconButton Icon="@Icons.Material.Filled.Add" 
+                                               Size="Size.Small" 
+                                               OnClick="@(() => IncreaseQuantity(context))" />
+                            </div>
+                        </MudTd>
+                        <MudTd DataLabel="Total">
+                            @((context.Product?.Price * context.Quantity)?.ToString("C"))
+                        </MudTd>
+                        <MudTd>
+                            <MudIconButton Icon="@Icons.Material.Filled.Delete" 
+                                           Color="Color.Error" 
+                                           OnClick="@(() => RemoveItemAsync(context))" 
+                                           Size="Size.Small" />
+                        </MudTd>
+                    </RowTemplate>
+                </MudTable>
+                
+                <div class="d-flex justify-start mt-4">
+                    <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.DeleteSweep" Color="Color.Error" OnClick="ClearCartAsync">
+                        Limpar Carrinho
+                    </MudButton>
+                </div>
+            </MudItem>
+
+            <MudItem xs="12" md="4">
+                <MudPaper Class="pa-6" Elevation="3" Outlined="true">
+                    <MudText Typo="Typo.h6" Class="mb-4">Resumo do Pedido</MudText>
+                    
+                    <div class="d-flex justify-space-between mb-2">
+                        <MudText>Subtotal</MudText>
+                        <MudText>@CalculateSubtotal().ToString("C")</MudText>
+                    </div>
+
+                    <MudDivider Class="my-4" />
+                    <div class="d-flex gap-2 align-center mb-2">
+                        <MudTextField @bind-Value="VoucherCode" 
+                                      Label="Cupom de Desconto" 
+                                      Variant="Variant.Outlined" 
+                                      Margin="Margin.Dense" 
+                                      Adornment="Adornment.End" 
+                                      AdornmentIcon="@Icons.Material.Filled.LocalOffer" />
+                        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="ApplyVoucherAsync" Size="Size.Medium">
+                            Aplicar
+                        </MudButton>
+                    </div>
+
+                    @if (CartModel.Voucher is not null)
+                    {
+                        <div class="d-flex justify-space-between mb-2">
+                            <MudText Color="Color.Success">Desconto (@CartModel.Voucher.Title)</MudText>
+                            <MudText Color="Color.Success">- @CartModel.Voucher.Amount.ToString("C")</MudText>
+                        </div>
+                    }
+
+                    <MudDivider Class="my-4" />
+                    
+                    <div class="d-flex justify-space-between mb-6">
+                        <MudText Typo="Typo.h5"><b>Total</b></MudText>
+                        <MudText Typo="Typo.h5" Color="Color.Primary"><b>@CalculateTotal().ToString("C")</b></MudText>
+                    </div>
+
+                    <MudButton Variant="Variant.Filled" 
+                               Color="Color.Primary" 
+                               FullWidth="true" 
+                               Size="Size.Large" 
+                               OnClick="CheckoutAsync"
+                               Disabled="@IsProcessingCheckout">
+                        @if (IsProcessingCheckout)
+                        {
+                            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                            <MudText Class="ms-2">Criando Pedido...</MudText>
+                        }
+                        else
+                        {
+                            <MudText>Finalizar Compra</MudText>
+                        }
+                    </MudButton>
+                    
+                    <MudButton Variant="Variant.Text" 
+                               Color="Color.Default" 
+                               FullWidth="true" 
+                               Class="mt-2" 
+                               Href="/">
+                        Continuar Comprando
+                    </MudButton>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    }
+</MudContainer>

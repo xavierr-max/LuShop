@@ -11,6 +11,8 @@ public class UpdateVoucherRequest
     
     [Required(ErrorMessage = "O número é obrigatório")]
     public string Number { get; set; } = string.Empty; // Código do voucher
+
+    public bool IsActive { get; set; }
     
     public decimal Amount { get; set; } // Valor de desconto ou preço
 }

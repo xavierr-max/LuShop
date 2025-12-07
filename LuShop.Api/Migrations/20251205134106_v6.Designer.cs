@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LuShop.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251204114214_v6")]
+    [Migration("20251205134106_v6")]
     partial class v6
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace LuShop.Api.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.0")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -95,6 +95,60 @@ namespace LuShop.Api.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("IdentityUser", (string)null);
+                });
+
+            modelBuilder.Entity("LuShop.Core.Models.Cart", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(160)
+                        .HasColumnType("nvarchar(160)");
+
+                    b.Property<long?>("VoucherId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.HasIndex("VoucherId");
+
+                    b.ToTable("Carts", (string)null);
+                });
+
+            modelBuilder.Entity("LuShop.Core.Models.CartItem", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("CartId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Quantity")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CartId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("CartItems", (string)null);
                 });
 
             modelBuilder.Entity("LuShop.Core.Models.Category", b =>
@@ -285,44 +339,6 @@ namespace LuShop.Api.Migrations
                     b.ToTable("Vouchers", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityPasskeyData", b =>
-                {
-                    b.Property<byte[]>("AttestationObject")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<byte[]>("ClientDataJson")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<bool>("IsBackedUp")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsBackupEligible")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsUserVerified")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("PublicKey")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<long>("SignCount")
-                        .HasColumnType("bigint");
-
-                    b.PrimitiveCollection<string>("Transports")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToTable("IdentityPasskeyData");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<long>", b =>
                 {
                     b.Property<long>("Id")
@@ -434,19 +450,6 @@ namespace LuShop.Api.Migrations
                     b.ToTable("IdentityUserLogin", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserPasskey<long>", b =>
-                {
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<byte[]>("CredentialId")
-                        .HasColumnType("varbinary(900)");
-
-                    b.HasKey("UserId", "CredentialId");
-
-                    b.ToTable("UserPasskeys");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<long>", b =>
                 {
                     b.Property<long>("UserId")
@@ -481,6 +484,35 @@ namespace LuShop.Api.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("IdentityUserToken", (string)null);
+                });
+
+            modelBuilder.Entity("LuShop.Core.Models.Cart", b =>
+                {
+                    b.HasOne("LuShop.Core.Models.Voucher", "Voucher")
+                        .WithMany()
+                        .HasForeignKey("VoucherId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Voucher");
+                });
+
+            modelBuilder.Entity("LuShop.Core.Models.CartItem", b =>
+                {
+                    b.HasOne("LuShop.Core.Models.Cart", "Cart")
+                        .WithMany("Items")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LuShop.Core.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cart");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("LuShop.Core.Models.Order", b =>
@@ -584,6 +616,11 @@ namespace LuShop.Api.Migrations
             modelBuilder.Entity("LuShop.Api.Models.User", b =>
                 {
                     b.Navigation("Roles");
+                });
+
+            modelBuilder.Entity("LuShop.Core.Models.Cart", b =>
+                {
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("LuShop.Core.Models.Order", b =>

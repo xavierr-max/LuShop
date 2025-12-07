@@ -1,0 +1,72 @@
+﻿@page "/pedidos/{OrderNumber}/transacoes"
+@inherits TransactionsByOrderPage
+
+<MudContainer Class="mt-4">
+    <MudText Typo="Typo.h4" Class="mb-4">Transações do Pedido #@OrderNumber</MudText>
+
+    @if (_loading)
+    {
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+    }
+    else if (_transactions == null || !_transactions.Any())
+    {
+        <MudAlert Severity="Severity.Info">Nenhuma transação encontrada para este pedido no Stripe.</MudAlert>
+    }
+    else
+    {
+        <MudTable Items="_transactions" Hover="true" Striped="true" Breakpoint="Breakpoint.Sm">
+            <HeaderContent>
+                <MudTh>ID Stripe</MudTh>
+                <MudTh>Cliente (Email)</MudTh>
+                <MudTh>Valor Total</MudTh>
+                <MudTh>Valor Capturado</MudTh>
+                <MudTh>Status</MudTh>
+                <MudTh>Ações</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="ID">@context.Id</MudTd>
+                <MudTd DataLabel="Email">@context.Email</MudTd>
+                
+                <MudTd DataLabel="Valor Total">
+                    @((context.Amount / 100.0m).ToString("C", System.Globalization.CultureInfo.GetCultureInfo("pt-BR")))
+                </MudTd>
+                
+                <MudTd DataLabel="Valor Capturado">
+                    @((context.AmountCaptured / 100.0m).ToString("C", System.Globalization.CultureInfo.GetCultureInfo("pt-BR")))
+                </MudTd>
+
+                <MudTd DataLabel="Status">
+                    @if (context.Refunded)
+                    {
+                        <MudChip T="string" Color="Color.Warning" Size="Size.Small">Estornado</MudChip>
+                    }
+                    else if (context.Paid && context.Status == "succeeded")
+                    {
+                        <MudChip T="string" Color="Color.Success" Size="Size.Small">Pago</MudChip>
+                    }
+                    else if (context.Status == "requires_payment_method")
+                    {
+                        <MudChip T="string" Color="Color.Error" Size="Size.Small">Falhou</MudChip>
+                    }
+                    else
+                    {
+                        <MudChip T="string" Color="Color.Info" Size="Size.Small">@context.Status</MudChip>
+                    }
+                </MudTd>
+                
+                <MudTd>
+                    <MudIconButton Icon="@Icons.Material.Filled.OpenInNew" 
+                                   Href="@($"https://dashboard.stripe.com/payments/{context.Id}")" 
+                                   Target="_blank" 
+                                   Title="Abrir no Stripe" />
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+    }
+    
+    <div class="mt-4">
+        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" Href="/orders">
+            Voltar para Pedidos
+        </MudButton>
+    </div>
+</MudContainer>

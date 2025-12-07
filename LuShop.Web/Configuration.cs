@@ -13,22 +13,22 @@ public static class Configuration
     {
         Typography = new Typography
         {
-            Default = new DefaultTypography()
+            Default = new Default()
             {
                 FontFamily = new[] { "Raleway", "Montserrat", "sans-serif" },
                 FontSize = "0.875rem",
-                FontWeight = "400" // Correção: Deve ser string
+                FontWeight = 400 // Correção: Deve ser string
             },
-            H6 = new H6Typography()
+            H6 = new H6()
             {
-                FontWeight = "700", // Correção: Deve ser string
+                FontWeight = 700, // Correção: Deve ser string
                 LetterSpacing = ".1rem"
             },
-            Button = new ButtonTypography()
+            Button = new Button()
             {
                 // TextTransform removido (não existe no objeto C#). 
                 // Botões do MudBlazor já são uppercase por padrão.
-                FontWeight = "600" // Correção: Deve ser string
+                FontWeight = 600 // Correção: Deve ser string
             }
         },
         PaletteLight = new PaletteLight

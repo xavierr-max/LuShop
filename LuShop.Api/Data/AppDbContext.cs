@@ -21,10 +21,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
 {
     // Usamos '= null!;' para silenciar o aviso de nulo, 
     // pois o EF Core injeta esses valores em tempo de execução.
-    public DbSet<Order> Orders { get; set; } = null!;
     public DbSet<Product> Products { get; set; } = null!;
-    public DbSet<Category> Categories { get; set; } = null!;
+    public DbSet<Order> Orders { get; set; } = null!;
     public DbSet<OrderItem> OrderItems { get; set; } = null!;
+    public DbSet<Cart> Carts { get; set; } = null!;
+    public DbSet<CartItem> CartItems { get; set; } = null!;
+    public DbSet<Category> Categories { get; set; } = null!;
     public DbSet<Voucher> Vouchers { get; set; } = null!;
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)

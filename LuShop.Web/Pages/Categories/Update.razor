@@ -1,0 +1,68 @@
+﻿@page "/categorias/editar/{Id:long}"
+@inherits UpdateCategoryBase
+
+<MudContainer MaxWidth="MaxWidth.Small">
+    
+    <MudText Typo="Typo.h4" 
+             GutterBottom="true" 
+             Class="mt-8 mb-6 text-center">
+        Atualizar Categoria (@Id)
+    </MudText>
+
+    @if (_isCategoryLoading)
+    {
+        <MudAlert Severity="Severity.Info" Class="d-flex align-center justify-center">
+            <MudProgressCircular Indeterminate="true" Class="me-2"/>
+            Carregando dados da categoria...
+        </MudAlert>
+    }
+    else
+    {
+        <MudPaper Class="pa-8 ma-2 elevation-8 rounded-xl" Style="border-top: 5px solid var(--mud-palette-warning);">
+            
+            <MudForm @ref="_form" @bind-IsValid="@_success">
+                
+                @* Campo oculto para o ID, que é lido pelo Request *@
+                <input type="hidden" @bind="_request.Id" />
+                
+                <MudTextField T="string" 
+                              Label="Nome da Categoria" 
+                              @bind-Value="_request.Title" 
+                              Required="true" 
+                              RequiredError="O título é obrigatório."
+                              MaxLength="80"
+                              Variant="Variant.Outlined"
+                              Class="mb-5"/>
+
+                <MudTextField T="string" 
+                              Label="Descrição Detalhada" 
+                              Lines="3"
+                              @bind-Value="_request.Description" 
+                              Required="true" 
+                              RequiredError="A descrição é obrigatória."
+                              Variant="Variant.Outlined"
+                              Class="mb-7"/>
+             
+                <div class="d-flex justify-end mt-4">
+                    <MudButton Variant="Variant.Filled" 
+                               Color="Color.Warning" 
+                               Size="Size.Large"
+                               Class="px-8"
+                               Disabled="@(_isBusy || !_success)" 
+                               OnClick="OnSubmitAsync">
+                        @if (_isBusy)
+                        {
+                            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                            <MudText Class="ms-2">Salvando...</MudText>
+                        }
+                        else
+                        {
+                            <MudText>Salvar Alterações</MudText>
+                        }
+                    </MudButton>
+                </div>
+
+            </MudForm>
+        </MudPaper>
+    }
+</MudContainer>

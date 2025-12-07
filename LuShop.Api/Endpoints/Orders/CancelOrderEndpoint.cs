@@ -1,12 +1,10 @@
-﻿using LuShop.Api.Common.Api;
+﻿using System.Security.Claims;
+using LuShop.Api.Common.Api;
 using LuShop.Core.Handlers;
 using LuShop.Core.Models;
 using LuShop.Core.Requests.Orders;
 using LuShop.Core.Responses;
-
-// Ajuste para o seu namespace de IEndpoint
-
-// Necessário para [FromRoute] se quiser ser explícito, ou deixe o Minimal API inferir
+using Microsoft.AspNetCore.Mvc;
 
 namespace LuShop.Api.Endpoints.Orders;
 
@@ -17,17 +15,30 @@ public class CancelOrderEndpoint : IEndpoint
             .WithName("Orders: Cancel")
             .WithSummary("Cancela um pedido")
             .WithDescription("Cancela um pedido existente baseado no ID")
-            .WithOrder(1)
+            .WithOrder(3)
+            .RequireAuthorization() // 👈 Adicione autenticação
             .Produces<Response<Order?>>();
 
     private static async Task<IResult> HandleAsync(
+        ClaimsPrincipal user,
         IOrderHandler handler,
-        long id) // O Minimal API pega o {id} da URL automaticamente
+        [FromRoute] long id)
     {
-        // Montamos o Request com o ID que veio da Rota
+        // Extrai o UserId do token
+        var userId = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value 
+                     ?? user.Claims.FirstOrDefault(c => c.Type == "sub")?.Value
+                     ?? user.Identity?.Name 
+                     ?? string.Empty;
+
+        if (string.IsNullOrEmpty(userId))
+        {
+            return TypedResults.BadRequest("Usuário não identificado");
+        }
+
         var request = new CancelOrderRequest 
         { 
             Id = id,
+            UserId = userId // 👈 Preenche o UserId
         };
 
         var result = await handler.CancelAsync(request);

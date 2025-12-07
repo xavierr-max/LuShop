@@ -1,0 +1,27 @@
+﻿@page "/orders"
+@attribute [Authorize]
+@inherits RequestsPage
+
+<MudContainer Class="mt-4">
+    <MudText Typo="Typo.h4" Class="mb-4">Buscar Transações</MudText>
+
+    <MudCard>
+        <MudCardContent>
+            <MudTextField @bind-Value="SearchOrderNumber"
+                          Label="Número do Pedido"
+                          Placeholder="Ex: 6569D858"
+                          Variant="Variant.Outlined"
+                          Adornment="Adornment.End"
+                          AdornmentIcon="@Icons.Material.Filled.Search"
+                          OnAdornmentClick="SearchTransactions" />
+        </MudCardContent>
+        <MudCardActions>
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       OnClick="SearchTransactions"
+                       Disabled="string.IsNullOrWhiteSpace(SearchOrderNumber)">
+                Buscar Transações
+            </MudButton>
+        </MudCardActions>
+    </MudCard>
+</MudContainer>

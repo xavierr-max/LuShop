@@ -5,4 +5,5 @@ namespace LuShop.Core.Requests.Products;
 public class GetAllProductsRequest : PublicPagedRequest
 {
     public string? Title { get; set; }
+    public long? CategoryId { get; set; }
 }

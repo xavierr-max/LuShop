@@ -16,13 +16,15 @@
     
     <ItemTemplate Context="product">
         <MudStack Row="true" AlignItems="AlignItems.Center">
-            @* ✅ CORREÇÃO AQUI: MudAvatar envolvendo MudImage *@
+            
             @if (!string.IsNullOrEmpty(product.ImageUrl))
             {
                 <MudAvatar Size="Size.Small">
-                    <MudImage Src="@product.ImageUrl" ObjectFit="ObjectFit.Cover"/>
+                    @* ✅ CORREÇÃO: Usando GetImageUrl(product.ImageUrl) *@
+                    <MudImage Src="@GetImageUrl(product.ImageUrl)" ObjectFit="ObjectFit.Cover"/>
                 </MudAvatar>
             }
+            
             <MudText>@product.Title</MudText>
             <MudSpacer />
             <MudText Typo="Typo.caption">@product.Price.ToString("C")</MudText>

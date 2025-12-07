@@ -1,0 +1,146 @@
+@page "/pedidos/{Number}/pagamento"
+@using LuShop.Core.Enums
+@inherits PaymentPage
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-8 mb-8">
+    
+    @if (PaymentSuccess)
+    {
+        @* === TELA DE SUCESSO === *@
+        <div class="d-flex justify-center my-8">
+            <MudCard Elevation="4" Class="pa-8 text-center" Style="max-width: 500px; width: 100%;">
+                <div class="d-flex justify-center mb-4">
+                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" 
+                             Color="Color.Success" 
+                             Style="width: 100px; height: 100px;" />
+                </div>
+                
+                <MudText Typo="Typo.h4" Color="Color.Success" GutterBottom="true">
+                    Pagamento Recebido!
+                </MudText>
+                
+                <MudText Typo="Typo.body1" Class="mb-6">
+                    Obrigado por sua compra. Seu pedido <b>#@Number</b> está sendo processado.
+                </MudText>
+
+                <MudDivider Class="my-4"/>
+
+                @if(Order != null)
+                {
+                    <div class="d-flex justify-space-between px-4 mb-4">
+                        <MudText Typo="Typo.body2">Total pago:</MudText>
+                        <MudText Typo="Typo.h6">@Order.Total.ToString("C")</MudText>
+                    </div>
+                }
+
+                <MudButton Variant="Variant.Filled" 
+                           Color="Color.Primary" 
+                           Size="Size.Large" 
+                           FullWidth="true" 
+                           Href="/pedidos"
+                           Class="mt-4">
+                    Ver Meus Pedidos
+                </MudButton>
+                
+                <MudButton Variant="Variant.Text" 
+                           Color="Color.Secondary" 
+                           Href="/"
+                           Class="mt-2">
+                    Voltar para a Loja
+                </MudButton>
+            </MudCard>
+        </div>
+    }
+    else if (IsBusy && Order == null)
+    {
+        @* === LOADING === *@
+        <div class="d-flex justify-center align-center" style="height: 50vh;">
+            <MudProgressCircular Indeterminate="true" Color="Color.Primary" Size="Size.Large" />
+        </div>
+    }
+    else if (Order == null)
+    {
+        @* === ERRO === *@
+        <MudAlert Severity="Severity.Error" Variant="Variant.Filled" Class="my-4">
+            Não foi possível carregar os dados do pedido.
+        </MudAlert>
+        <MudButton Variant="Variant.Text" Color="Color.Primary" Href="/">Voltar para o início</MudButton>
+    }
+    else
+    {
+        @* === CHECKOUT PADRÃO === *@
+        <MudText Typo="Typo.h4" GutterBottom="true">Checkout</MudText>
+        <MudText Typo="Typo.subtitle1" Class="mb-4 text-muted">Finalize o pagamento do seu pedido #@Number</MudText>
+
+        <MudGrid>
+            @* COLUNA DA ESQUERDA: Resumo *@
+            <MudItem xs="12" md="5">
+                <MudCard Elevation="3">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h6">Resumo do Pedido</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <div class="d-flex justify-space-between my-2">
+                            <MudText>Número:</MudText>
+                            <MudText><b>@Order.Number</b></MudText>
+                        </div>
+                        <MudDivider Class="my-2"/>
+                        <div class="d-flex justify-space-between my-2">
+                            <MudText Typo="Typo.h6">Total:</MudText>
+                            <MudText Typo="Typo.h6" Color="Color.Success">
+                                @Order.Total.ToString("C")
+                            </MudText>
+                        </div>
+                        <div class="mt-4">
+                            <MudText Typo="Typo.caption">Status atual:</MudText>
+                            <MudChip T="string" Color="@(Order.Status == EOrderStatus.Paid ? Color.Success : Color.Warning)" Size="Size.Small">
+                                @Order.Status.ToString()
+                            </MudChip>
+                        </div>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+
+            @* COLUNA DA DIREITA: Botão de Pagar *@
+            <MudItem xs="12" md="7">
+                <MudCard Elevation="3">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h6">Pagamento</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <div class="pa-4">
+                            <MudText Class="mb-4">
+                                Ao clicar em finalizar, você será redirecionado para a página segura do Stripe para concluir o pagamento.
+                            </MudText>
+                            <MudAlert Severity="Severity.Info" Class="mb-4">
+                                Ambiente seguro autenticado pelo Stripe.
+                            </MudAlert>
+                        </div>
+                    </MudCardContent>
+                    <MudCardActions Class="pa-4">
+                        <MudButton Variant="Variant.Filled" 
+                                   Color="Color.Primary" 
+                                   Size="Size.Large" 
+                                   FullWidth="true" 
+                                   OnClick="PayOrderAsync"
+                                   Disabled="@IsBusy">
+                            @if (IsBusy)
+                            {
+                                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                                <MudText Class="ms-2">Redirecionando...</MudText>
+                            }
+                            else
+                            {
+                                <MudText>Finalizar Compra</MudText>
+                            }
+                        </MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    }
+</MudContainer>

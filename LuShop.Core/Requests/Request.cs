@@ -1,4 +1,6 @@
-﻿namespace LuShop.Core.Requests;
+﻿using System.Text.Json.Serialization;
+
+namespace LuShop.Core.Requests;
 
 public abstract class Request
 {

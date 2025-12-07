@@ -1,0 +1,55 @@
+﻿@page "/categorias/adicionar"
+@inherits AdicionarCategoryBase
+
+<MudContainer MaxWidth="MaxWidth.Small">
+    
+    <MudText Typo="Typo.h4" 
+             GutterBottom="true" 
+             Class="mt-8 mb-6 text-center">
+        Adicionar Nova Categoria
+    </MudText>
+
+    <MudPaper Class="pa-8 ma-2 elevation-8 rounded-xl" Style="border-top: 5px solid var(--mud-palette-primary);">
+        
+        <MudForm @ref="_form" @bind-IsValid="@_success">
+     
+            <MudTextField T="string" 
+                          Label="Nome da Categoria" 
+                          @bind-Value="_request.Title" 
+                          Required="true" 
+                          RequiredError="O título é obrigatório."
+                          MaxLength="80"
+                          Variant="Variant.Outlined"
+                          Class="mb-5"/>
+
+            <MudTextField T="string" 
+                          Label="Descrição Detalhada" 
+                          Lines="3"
+                          @bind-Value="_request.Description" 
+                          Required="true" 
+                          RequiredError="A descrição é obrigatória."
+                          Variant="Variant.Outlined"
+                          Class="mb-7"/>
+            
+            <div class="d-flex justify-end mt-4">
+                <MudButton Variant="Variant.Filled" 
+                           Color="Color.Primary" 
+                           Size="Size.Large"
+                           Class="px-8"
+                           Disabled="@(_isBusy || !_success)" 
+                           OnClick="OnSubmitAsync">
+                    @if (_isBusy)
+                    {
+                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                        <MudText Class="ms-2">Processando...</MudText>
+                    }
+                    else
+                    {
+                        <MudText>Confirmar Cadastro</MudText>
+                    }
+                </MudButton>
+            </div>
+
+        </MudForm>
+    </MudPaper>
+</MudContainer>

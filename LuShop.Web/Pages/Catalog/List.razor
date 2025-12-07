@@ -1,0 +1,151 @@
+﻿@page "/catalogo"
+@inherits CatalogPage
+
+<PageTitle>LuShop | Catálogo</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-8 mb-16">
+    <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true" Class="mb-12" Style="font-weight: 300;">
+        CATÁLOGO DE PRODUTOS
+    </MudText>
+
+    @if (IsBusy)
+    {
+        <div class="my-12">
+            <MudSkeleton Width="50%" Height="50px" Class="mb-8" />
+            <MudGrid Spacing="4">
+                @for (int i = 0; i < 12; i++)
+                {
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="0" Outlined="true">
+                            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="200px" />
+                            <MudCardContent>
+                                <MudSkeleton Width="80%" Height="30px" Class="mb-2" />
+                                <MudSkeleton Width="60%" Height="20px" />
+                            </MudCardContent>
+                        </MudCard>
+                    </MudItem>
+                }
+            </MudGrid>
+        </div>
+    }
+    else if (!Products.Any())
+    {
+        <MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Class="mt-12">
+            <MudText>Nenhum produto encontrado.</MudText>
+            <MudText Typo="Typo.body2">Adicione produtos no painel administrativo.</MudText>
+        </MudAlert>
+    }
+    else
+    {
+        @foreach (var group in Products
+            .GroupBy(p => GetCategoryForProduct(p) ?? new Category { Id = 0, Title = "Sem Categoria" })
+            .OrderBy(g => g.Key.Title == "Sem Categoria" ? "ZZZ" : g.Key.Title))
+        {
+            var category = group.Key;
+            var productsInCategory = group.ToList();
+
+            <div class="my-16">
+                <div class="d-flex align-center justify-space-between mb-6 flex-wrap gap-4">
+                    <div>
+                        <MudText Typo="Typo.h4" Style="font-weight: 600; color: var(--mud-palette-primary);">
+                            @(category.Title == "Sem Categoria" ? "Outros Produtos" : category.Title)
+                        </MudText>
+                        @if (category.Title != "Sem Categoria" && !string.IsNullOrWhiteSpace(category.Description))
+                        {
+                            <MudText Typo="Typo.body1" Class="mud-text-secondary mt-2">
+                                @category.Description
+                            </MudText>
+                        }
+                    </div>
+
+                    @if (productsInCategory.Count > 8)
+                    {
+                        var slug = category.Title == "Sem Categoria"
+                            ? "sem-categoria"
+                            : category.Title.ToLower()
+                                .Replace(" ", "-")
+                                .Replace("&", "e")
+                                .Replace("/", "-")
+                                .Replace("+", "")
+                                .Replace("(", "")
+                                .Replace(")", "");
+
+                        <MudButton Variant="Variant.Text"
+                                   Color="Color.Primary"
+                                   Size="Size.Large"
+                                   Href="@($"/catalogo?categoria={slug}")">
+                            Ver todos (@productsInCategory.Count)
+                            <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Class="ml-2" />
+                        </MudButton>
+                    }
+                </div>
+
+                <MudGrid Spacing="4">
+                    @foreach (var product in productsInCategory.Take(8))
+                    {
+                        <MudItem xs="12" sm="6" md="4" lg="3">
+                            <MudCard Elevation="2" Class="h-100 d-flex flex-column product-card">
+                                @if (!string.IsNullOrWhiteSpace(product.ImageUrl))
+                                {
+                                    <MudCardMedia Image="@GetImageUrl(product.ImageUrl)" Height="200" />
+                                }
+                                else
+                                {
+                                    <div class="d-flex justify-center align-center bg-grey-lighten-3" style="height: 200px;">
+                                        <MudIcon Icon="@Icons.Material.Outlined.ImageNotSupported" Size="Size.Large" />
+                                    </div>
+                                }
+
+                                <MudCardContent Class="flex-grow-1">
+                                    <MudText Typo="Typo.h6" Class="text-truncate" ToolTip="@product.Title">
+                                        @product.Title
+                                    </MudText>
+
+                                    <MudText Typo="Typo.body2" Class="mud-text-secondary mt-1 text-truncate-2">
+                                        @(string.IsNullOrWhiteSpace(product.Description) ? "Sem descrição" : product.Description)
+                                    </MudText>
+
+                                    <MudText Typo="Typo.h6" Color="Color.Primary" Class="mt-4">
+                                        @product.Price.ToString("C")
+                                    </MudText>
+                                </MudCardContent>
+
+                                <MudCardActions Class="d-flex justify-space-between pa-4 mt-auto">
+                                    <MudButton Variant="Variant.Outlined"
+                                               Color="Color.Secondary"
+                                               Size="Size.Small"
+                                               Href="@($"/produto/{product.Slug}")">
+                                        DETALHES
+                                    </MudButton>
+
+                                    <MudIconButton Icon="@Icons.Material.Filled.AddShoppingCart"
+                                                   Color="Color.Primary"
+                                                   Size="Size.Small"
+                                                   OnClick="@(() => AddToCartAsync(product))"
+                                                   ToolTip="Adicionar ao carrinho" />
+                                </MudCardActions>
+                            </MudCard>
+                        </MudItem>
+                    }
+                </MudGrid>
+            </div>
+        }
+    }
+</MudContainer>
+
+<style>
+    .product-card {
+        transition: all 0.3s ease;
+    }
+    .product-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(0,0,0,0.15) !important;
+    }
+    .text-truncate-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>

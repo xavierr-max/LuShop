@@ -1,8 +1,10 @@
-﻿using LuShop.Api.Common.Api;
+﻿using System.Security.Claims;
+using LuShop.Api.Common.Api;
 using LuShop.Core.Handlers;
 using LuShop.Core.Models;
-using LuShop.Core.Requests.Orders; // Namespace corrigido (Plural)
+using LuShop.Core.Requests.Orders;
 using LuShop.Core.Responses;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LuShop.Api.Endpoints.Orders;
 
@@ -12,18 +14,36 @@ public class GetAllOrdersEndpoint : IEndpoint
         => app.MapGet("/", HandleAsync)
             .WithName("Orders: Get All")
             .WithSummary("Recupera todos os pedidos")
-            .WithDescription("Recupera uma lista paginada de pedidos ordenados por data")
+            .WithDescription("Recupera uma lista paginada de pedidos do usuário logado")
             .WithOrder(5)
+            .RequireAuthorization()
             .Produces<PagedResponse<List<Order>?>>();
 
     private static async Task<IResult> HandleAsync(
         IOrderHandler handler,
-        [AsParameters] GetAllOrdersRequest request)
+        ClaimsPrincipal user,
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 25)
     {
-        // [AsParameters] é vital aqui!
-        // Ele diz ao ASP.NET: "Pegue os valores de PageNumber e PageSize da URL 
-        // (ex: ?pageNumber=2&pageSize=10) e preencha este objeto request".
-        
+        // Extrai o UserId do token JWT
+        var userId = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value 
+                     ?? user.Claims.FirstOrDefault(c => c.Type == "sub")?.Value
+                     ?? user.Identity?.Name 
+                     ?? string.Empty;
+
+        if (string.IsNullOrEmpty(userId))
+        {
+            return TypedResults.BadRequest("Usuário não identificado");
+        }
+
+        // Cria o request manualmente
+        var request = new GetAllOrdersRequest
+        {
+            UserId = userId,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
+
         var result = await handler.GetAllAsync(request);
 
         return result.IsSuccess

@@ -25,8 +25,11 @@ public class CreateOrderEndpoint : IEndpoint
     {
         // Preenche o ID do usuário automaticamente baseado no Token JWT
         // (Assumindo que sua classe base 'Request' tenha a propriedade UserId)
-        request.UserId = user.Identity?.Name ?? string.Empty;
-
+        var userId = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value 
+                     ?? user.Identity?.Name 
+                     ?? string.Empty;
+        
+        request.UserId = userId;
         var result = await handler.CreateAsync(request);
 
         return result.IsSuccess

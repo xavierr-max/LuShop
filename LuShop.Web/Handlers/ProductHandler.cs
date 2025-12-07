@@ -13,57 +13,96 @@ public class ProductHandler(IHttpClientFactory httpClientFactory) : IProductHand
 
     public async Task<Response<Product?>> CreateAsync(CreateProductRequest request)
     {
-        var result = await _client.PostAsJsonAsync(BaseUrl, request);
-        return await result.Content.ReadFromJsonAsync<Response<Product?>>()
-               ?? new Response<Product?>(null, 400, "Falha ao criar o produto.");
+        try
+        {
+            var result = await _client.PostAsJsonAsync(BaseUrl, request);
+            return await result.Content.ReadFromJsonAsync<Response<Product?>>()
+                   ?? new Response<Product?>(null, 400, "Falha ao criar o produto.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao criar produto: {ex.Message}");
+            return new Response<Product?>(null, 500, "Erro ao conectar ao servidor");
+        }
     }
 
     public async Task<Response<Product?>> UpdateAsync(UpdateProductRequest request)
     {
-        var result = await _client.PutAsJsonAsync($"{BaseUrl}/{request.Id}", request);
-        return await result.Content.ReadFromJsonAsync<Response<Product?>>()
-               ?? new Response<Product?>(null, 400, "Falha ao atualizar o produto.");
+        try
+        {
+            var result = await _client.PutAsJsonAsync($"{BaseUrl}/{request.Id}", request);
+            return await result.Content.ReadFromJsonAsync<Response<Product?>>()
+                   ?? new Response<Product?>(null, 400, "Falha ao atualizar o produto.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao atualizar produto: {ex.Message}");
+            return new Response<Product?>(null, 500, "Erro ao conectar ao servidor");
+        }
     }
 
     public async Task<Response<Product?>> DeleteAsync(DeleteProductRequest request)
     {
-        var result = await _client.DeleteAsync($"{BaseUrl}/{request.Id}");
-        return await result.Content.ReadFromJsonAsync<Response<Product?>>()
-               ?? new Response<Product?>(null, 400, "Falha ao excluir o produto.");
+        try
+        {
+            var result = await _client.DeleteAsync($"{BaseUrl}/{request.Id}");
+            return await result.Content.ReadFromJsonAsync<Response<Product?>>()
+                   ?? new Response<Product?>(null, 400, "Falha ao excluir o produto.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao deletar produto: {ex.Message}");
+            return new Response<Product?>(null, 500, "Erro ao conectar ao servidor");
+        }
     }
 
     public async Task<Response<Product?>> GetBySlugAsync(GetProductBySlugRequest request)
     {
+        // ✅ VALIDAÇÃO CRÍTICA: Não faz requisição se o slug estiver vazio ou inválido
+        if (string.IsNullOrWhiteSpace(request.Slug) || 
+            request.Slug == "{Slug}" || 
+            request.Slug.Contains('{') || 
+            request.Slug.Contains('}'))
+        {
+            Console.WriteLine($"⚠️ Slug inválido detectado: '{request.Slug}' - requisição bloqueada");
+            return new Response<Product?>(null, 400, "Slug inválido");
+        }
+
         try
         {
-            // Tenta buscar o produto
-            return await _client.GetFromJsonAsync<Response<Product?>>($"{BaseUrl}/{request.Slug}")
+            // Garante que o slug está encodado corretamente para URL
+            var encodedSlug = Uri.EscapeDataString(request.Slug);
+            var url = $"{BaseUrl}/{encodedSlug}";
+            
+            Console.WriteLine($"🔍 Buscando produto: {url}");
+            
+            return await _client.GetFromJsonAsync<Response<Product?>>(url)
                    ?? new Response<Product?>(null, 404, "Produto não encontrado.");
         }
         catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
         {
-            // Se a API retornar 404, capturamos o erro e retornamos null sem quebrar o site
+            Console.WriteLine($"❌ Produto não encontrado: {request.Slug}");
             return new Response<Product?>(null, 404, "Produto não encontrado.");
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            // Qualquer outro erro genérico
+            Console.WriteLine($"❌ Erro ao buscar produto '{request.Slug}': {ex.Message}");
             return new Response<Product?>(null, 500, "Erro ao conectar com o servidor.");
         }
     }
 
     public async Task<PagedResponse<List<Product>?>> GetAllAsync(GetAllProductsRequest request)
     {
-        // Monta a URL básica
-        var url = $"{BaseUrl}?pageNumber={request.PageNumber}&pageSize={request.PageSize}";
+        // Inicia a URL apenas com paginação
+        var url = $"v1/products?pageNumber={request.PageNumber}&pageSize={request.PageSize}";
 
-        // ✅ MELHORIA: Verifica se tem filtro de título e adiciona na URL
-        if (!string.IsNullOrWhiteSpace(request.Title))
+        // CORREÇÃO: Adiciona o CategoryId apenas se ele tiver um valor (para o filtro funcionar)
+        if (request.CategoryId.HasValue)
         {
-            url += $"&title={request.Title}";
+            url += $"&categoryId={request.CategoryId.Value}";
         }
-
+        
         return await _client.GetFromJsonAsync<PagedResponse<List<Product>?>>(url)
-               ?? new PagedResponse<List<Product>?>(null, 400, "Não foi possível buscar os produtos.");
+               ?? new PagedResponse<List<Product>?>(null, 400, "Não foi possível obter os produtos");
     }
 }

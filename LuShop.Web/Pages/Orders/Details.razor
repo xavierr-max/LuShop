@@ -1,0 +1,115 @@
+﻿@page "/pedidos"
+@inherits DetailsPage
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-8 mb-8">
+    
+    @* --- CABEÇALHO --- *@
+    <div class="d-flex justify-space-between align-center mb-6">
+        <div>
+            <MudText Typo="Typo.h4"><b>Meus Pedidos</b></MudText>
+            <MudText Typo="Typo.subtitle1" Class="text-muted">Histórico de compras</MudText>
+        </div>
+        <MudButton Variant="Variant.Outlined" Color="Color.Primary" Href="/">
+            Nova Compra
+        </MudButton>
+    </div>
+
+    @* --- PAINEL DE DIAGNÓSTICO --- *@
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Class="mb-6" Dense="true">
+        Logado como: <b>@CurrentUserEmail</b> <br/>
+        ID do Token: <code>@CurrentUserId</code>
+    </MudAlert>
+
+    @* --- LISTAGEM --- *@
+    @if (IsBusy)
+    {
+        <div class="py-8 d-flex flex-column align-center">
+            <MudProgressCircular Indeterminate="true" Color="Color.Primary" Size="Size.Large" />
+            <MudText Class="mt-4">Buscando seus pedidos...</MudText>
+        </div>
+    }
+    else if (Orders.Count == 0)
+    {
+        <MudPaper Class="pa-8 d-flex flex-column align-center justify-center rounded-xl" Outlined="true">
+            <MudIcon Icon="@Icons.Material.TwoTone.ShoppingBag" Size="Size.Large" Color="Color.Default" Style="width: 80px; height: 80px; opacity: 0.5;" />
+            <MudText Typo="Typo.h6" Class="mt-4">Nenhum pedido encontrado</MudText>
+            <MudText Typo="Typo.body2" Class="mb-6 text-muted" Align="Align.Center">
+                Não encontramos registros vinculados à sua conta atual.
+            </MudText>
+        </MudPaper>
+    }
+    else
+    {
+        <div class="d-flex flex-column gap-4">
+            @foreach (var order in Orders)
+            {
+                <MudCard Elevation="2" Class="rounded-lg">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <div class="d-flex justify-space-between align-center w-100">
+                                <div>
+                                    <MudText Typo="Typo.h6">Pedido #@order.Number</MudText>
+                                    <MudText Typo="Typo.caption">@order.CreatedAt.ToString("g")</MudText>
+                                </div>
+                                <MudChip T="string" Color="@GetStatusColor(order.Status)" Size="Size.Small" Variant="Variant.Filled">
+                                    @GetStatusText(order.Status)
+                                </MudChip>
+                            </div>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    
+                    <MudCardContent>
+                        <div class="d-flex justify-space-between">
+                            <MudText>Total do Pedido:</MudText>
+                            <MudText Typo="Typo.h6" Color="Color.Success"><b>@order.Total.ToString("C")</b></MudText>
+                        </div>
+                        
+                        @if(order.Voucher != null)
+                        {
+                            <MudText Typo="Typo.caption" Color="Color.Success">
+                                Cupom aplicado: @order.Voucher.Title
+                            </MudText>
+                        }
+                    </MudCardContent>
+                    
+                    <MudCardActions>
+                        @* LÓGICA DOS BOTÕES DE AÇÃO *@
+                        
+                        @if (order.Status == EOrderStatus.WaitingPayment)
+                        {
+                            <MudButton Variant="Variant.Outlined" Color="Color.Error" StartIcon="@Icons.Material.Filled.Cancel" 
+                                       OnClick="@(() => OnCancelOrderAsync(order))" Class="mr-2">
+                                Cancelar
+                            </MudButton>
+                        }
+
+                        @if (order.Status == EOrderStatus.Paid)
+                        {
+                            <MudButton Variant="Variant.Outlined" Color="Color.Warning" StartIcon="@Icons.Material.Filled.Undo"
+                                       OnClick="@(() => OnRefundOrderAsync(order))" Class="mr-2">
+                                Estornar
+                            </MudButton>
+                        }
+
+                        <MudSpacer />
+                        
+                        @* Botão Original de Pagar/Detalhes *@
+                        @if(order.Status == EOrderStatus.WaitingPayment)
+                        {
+                             <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => GoToPayment(order))">
+                                Pagar Agora
+                            </MudButton>
+                        }
+                        else
+                        {
+                             <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@(() => GoToPayment(order))">
+                                Ver Detalhes
+                            </MudButton>
+                        }
+
+                    </MudCardActions>
+                </MudCard>
+            }
+        </div>
+    }
+</MudContainer>

@@ -29,7 +29,7 @@ builder.Services.AddTransient<CookieHandler>();
 // 2. Autorização (Policies)
 builder.Services.AddAuthorizationCore(options =>
 {
-    options.AddPolicy("Admin", policy => 
+    options.AddPolicy("Admin", policy =>
         policy.RequireRole("Admin"));
 });
 
@@ -60,5 +60,9 @@ builder.Services
 builder.Services.AddTransient<IAccountHandler, AccountHandler>();
 builder.Services.AddTransient<IOrderHandler, OrderHandler>();  
 builder.Services.AddTransient<IProductHandler, ProductHandler>(); 
+builder.Services.AddTransient<ICartHandler, CartHandler>();
+builder.Services.AddTransient<ICategoryHandler, CategoryHandler>();
+builder.Services.AddTransient<IVoucherHandler, VoucherHandler>();
+builder.Services.AddTransient<IStripeHandler, StripeHandler>();
 
 await builder.Build().RunAsync();

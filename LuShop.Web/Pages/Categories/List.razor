@@ -1,0 +1,64 @@
+﻿@page "/categorias"
+@inherits ListCategoryPage
+
+<PageTitle>Categorias - Admin</PageTitle>
+
+<MudText Typo="Typo.h3" Class="mb-4">Categorias</MudText>
+
+<div class="d-flex justify-end mb-4">
+    <MudButton Variant="Variant.Filled"
+               Color="Color.Primary"
+               StartIcon="@Icons.Material.TwoTone.Add"
+               Href="/categorias/adicionar">
+        NOVA CATEGORIA
+    </MudButton>
+</div>
+
+<MudDataGrid T="LuShop.Core.Models.Category"
+             Items="@Categories"
+             Filterable="true"
+             QuickFilter="@Filter"
+             Loading="@IsBusy"
+             Hover="true"
+             Dense="true"
+             Bordered="true">
+
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Lista de Categorias</MudText>
+        <MudSpacer />
+        <MudTextField @bind-Value="SearchTerm"
+                      Placeholder="Pesquisar..."
+                      Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search"
+                      Immediate="true"
+                      Class="mt-0" />
+    </ToolBarContent>
+
+    <Columns>
+        <PropertyColumn Property="x => x.Id" Title="ID" />
+        <PropertyColumn Property="x => x.Title" Title="Título" />
+        <PropertyColumn Property="x => x.Description" Title="Descrição" />
+
+        <TemplateColumn CellClass="d-flex gap-2">
+            <CellTemplate>
+                <MudButton Size="Size.Small"
+                           Variant="Variant.Outlined"
+                           Color="Color.Primary"
+                           Href="@($"/categorias/editar/{context.Item.Id}")">
+                    Editar
+                </MudButton>
+
+                <MudButton Size="Size.Small"
+                           Variant="Variant.Outlined"
+                           Color="Color.Error"
+                           Href="@($"/categorias/deletar/{context.Item.Id}")">
+                    Excluir
+                </MudButton>
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+
+    <PagerContent>
+        <MudDataGridPager T="LuShop.Core.Models.Category" />
+    </PagerContent>
+</MudDataGrid>

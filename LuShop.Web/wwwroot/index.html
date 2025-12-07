@@ -2,45 +2,61 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>LuShop.Web</title>
-    <base href="/" />
+    <base href="/"/>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
+          rel="stylesheet">
 
-    <link href="_content/MudBlazor/MudBlazor.min.css?v=@(MudBlazor.Metadata.Version)" rel="stylesheet" />
-    
-    <link rel="stylesheet" href="css/app.css" />
-    <link href="LuShop.Web.styles.css" rel="stylesheet" />
+    <link href="_content/MudBlazor/MudBlazor.min.css?v=@(MudBlazor.Metadata.Version)" rel="stylesheet"/>
 
-    <link rel="icon" type="image/png" href="favicon.png" />
-    
-    <link href="manifest.webmanifest" rel="manifest" />
-    <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
-    <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
+    <link rel="stylesheet" href="css/app.css"/>
+    <link href="LuShop.Web.styles.css" rel="stylesheet"/>
+
+    <link rel="icon" type="image/png" href="favicon.png"/>
+
+    <link href="manifest.webmanifest" rel="manifest"/>
+    <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png"/>
+    <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png"/>
 </head>
 
 <body>
-    <div id="app">
-        <svg class="loading-progress">
-            <circle r="40%" cx="50%" cy="50%" />
-            <circle r="40%" cx="50%" cy="50%" />
-        </svg>
-        <div class="loading-progress-text"></div>
-    </div>
+<div id="app">
+    <svg class="loading-progress">
+        <circle r="40%" cx="50%" cy="50%"/>
+        <circle r="40%" cx="50%" cy="50%"/>
+    </svg>
+    <div class="loading-progress-text"></div>
+</div>
 
-    <div id="blazor-error-ui">
-        An unhandled error has occurred.
-        <a href="." class="reload">Reload</a>
-        <span class="dismiss">🗙</span>
-    </div>
-    <script src="_framework/blazor.webassembly.js"></script>
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="." class="reload">Reload</a>
+    <span class="dismiss">🗙</span>
+</div>
 
-    <script src="_content/MudBlazor/MudBlazor.min.js"></script>
-    <script>navigator.serviceWorker.register('service-worker.js');</script>
+<!-- Script Principal do Blazor -->
+<script src="_framework/blazor.webassembly.js"></script>
+
+<!-- MudBlazor -->
+<script src="_content/MudBlazor/MudBlazor.min.js"></script>
+
+<!-- Stripe Scripts -->
+<script src="https://js.stripe.com/v3/"></script>
+<script src="js/stripe-checkout.js"></script>
+
+<script>
+    // Correção: Verifica se o navegador suporta SW e se NÃO está rodando em um blob URL (preview)
+    if ('serviceWorker' in navigator && window.location.protocol !== 'blob:') {
+        navigator.serviceWorker.register('service-worker.js').catch(function (error) {
+            console.warn('Service Worker registration skipped or failed:', error);
+        });
+    }
+</script>
 </body>
 
 </html>

@@ -1,113 +1,126 @@
 ﻿@page "/"
+@using LuShop.Web.Pages
 
 <PageTitle>LuShop | Catálogo</PageTitle>
 
-<MudContainer MaxWidth="MaxWidth.Large" Class="mt-8 mb-16">
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-12 mb-16">
     
-    <MudText Typo="Typo.h4" GutterBottom="true" Align="Align.Center" Class="mb-8" Style="font-weight: 300;">
-        LANÇAMENTOS EXCLUSIVOS
-    </MudText>
+    @* Cabeçalho mais trabalhado com subtítulo e divisor *@
+    <div class="d-flex flex-column align-center mb-12">
+        <MudText Typo="Typo.h3" Align="Align.Center" Style="font-weight: 700; letter-spacing: -0.5px;">
+            LANÇAMENTOS
+        </MudText>
+        <MudText Typo="Typo.h6" Align="Align.Center" Class="mud-text-secondary mt-2" Style="font-weight: 300;">
+            As melhores novidades selecionadas para você
+        </MudText>
+        <MudDivider Class="mt-4" Width="60px" Color="Color.Primary" Style="border-width: 3px; border-radius: 4px;" />
+    </div>
 
     @if (IsBusy)
     {
-        <MudGrid>
+        <MudGrid Spacing="4">
             @for (int i = 0; i < 8; i++)
             {
                 <MudItem xs="12" sm="6" md="4" lg="3">
-                    <MudCard Elevation="0" Outlined="true">
-                        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="200px" />
+                    <MudCard Outlined="true" Elevation="0" Class="rounded-lg">
+                        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="240px" />
                         <MudCardContent>
-                            <MudSkeleton Width="80%" Height="30px" Class="mb-2" />
-                            <MudSkeleton Width="40%" Height="20px" />
+                            <MudSkeleton Width="60%" Height="25px" Class="mb-2" />
+                            <MudSkeleton Width="90%" Height="15px" />
                         </MudCardContent>
+                        <MudCardActions Class="px-4 pb-4">
+                            <MudSkeleton Width="40%" Height="35px" Class="rounded" />
+                        </MudCardActions>
                     </MudCard>
                 </MudItem>
             }
         </MudGrid>
     }
-    // Estado Vazio (Nenhum produto encontrado)
     else if (Products is null || !Products.Any())
     {
-        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Class="mt-4">
+        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" ContentAlignment="HorizontalAlignment.Center" Class="mt-4 py-4">
             Nenhum produto disponível no momento. Volte em breve!
         </MudAlert>
     }
-    // Listagem de Produtos
     else
     {
         <MudGrid Spacing="4">
             @foreach (var product in Products)
             {
                 <MudItem xs="12" sm="6" md="4" lg="3">
-                    <MudCard Elevation="2" Class="h-100 d-flex flex-column product-card">
+                    @* Card com borda, sem sombra e cantos arredondados (rounded-lg) *@
+                    <MudCard Outlined="true" Elevation="0" Class="h-100 d-flex flex-column rounded-lg hover-scale">
                         
+                        @* Área da Imagem mais alta para elegância *@
                         @if (!string.IsNullOrEmpty(product.ImageUrl))
                         {
-                            <MudCardMedia Image="@($"http://localhost:5047/{product.ImageUrl}")" Height="200" />
+                            <MudCardMedia Image="@GetImageUrl(product.ImageUrl)" Height="240" />
                         }
                         else
                         {
-                            <div class="d-flex justify-center align-center mud-theme-secondary-background" style="height: 200px;">
-                                <MudIcon Icon="@Icons.Material.Outlined.ImageNotSupported" Size="Size.Large" Style="color: white; width: 64px; height: 64px;" />
+                            <div class="d-flex justify-center align-center mud-theme-secondary-background" style="height: 240px;">
+                                <MudIcon Icon="@Icons.Material.Outlined.ImageNotSupported" Size="Size.Large" Style="color: white; opacity: 0.5;" />
                             </div>
                         }
 
-                        <MudCardContent Class="flex-grow-1">
-                            <MudText Typo="Typo.h6" Class="text-truncate">
+                        <MudCardContent Class="flex-grow-1 pt-6">
+                            @* Título mais limpo *@
+                            <MudText Typo="Typo.subtitle1" Style="font-weight: 600; line-height: 1.2;" Class="mb-2 text-truncate" Title="@product.Title">
                                 @product.Title
                             </MudText>
                             
-                            <MudText Typo="Typo.body2" Class="mud-text-secondary mt-1 text-truncate-2" Style="height: 40px;">
+                            @* Descrição mais discreta *@
+                            <MudText Typo="Typo.caption" Class="mud-text-secondary text-truncate-2" Style="height: 36px;">
                                 @product.Description
-                            </MudText>
-                            
-                            <MudText Typo="Typo.h6" Color="Color.Primary" Class="mt-4">
-                                @product.Price.ToString("C")
                             </MudText>
                         </MudCardContent>
 
-                        <MudCardActions Class="d-flex justify-space-between pa-4">
-                            <MudButton Variant="Variant.Outlined" 
-                                       Color="Color.Secondary" 
-                                       Size="Size.Small"
-                                       Href="@($"/produto/{product.Slug}")">
-                                DETALHES
-                            </MudButton>
+                        @* Rodapé do Card: Preço e Ações separados visualmente *@
+                        <div class="px-4 pb-4 mt-auto">
+                            <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
+                                
+                                @* Preço em destaque *@
+                                <MudText Typo="Typo.h6" Color="Color.Primary" Style="font-weight: 800;">
+                                    @product.Price.ToString("C")
+                                </MudText>
 
-                            <MudIconButton Icon="@Icons.Material.Filled.AddShoppingCart" 
-                                           Color="Color.Primary" 
-                                           Size="Size.Small" />
-                        </MudCardActions>
+                                @* Botão de ação principal Ícone *@
+                                <MudIconButton Icon="@Icons.Material.Filled.AddShoppingCart" 
+                                             Variant="Variant.Filled"
+                                             Color="Color.Primary" 
+                                             Size="Size.Medium" 
+                                             OnClick="@(() => AddToCartAsync(product))"
+                                             Title="Adicionar ao Carrinho"
+                                             Class="rounded-circle shadow-sm" />
+                            </MudStack>
+                            
+                            @* Botão secundário de detalhes (texto simples) *@
+                            <div class="mt-3 text-center">
+                                <MudButton Variant="Variant.Outlined" 
+                                           Color="Color.Default" 
+                                           Size="Size.Small"
+                                           FullWidth="true"
+                                           Class="rounded-pill mud-text-secondary"
+                                           Style="border-color: var(--mud-palette-lines-inputs); font-weight: 500; letter-spacing: 0.5px;"
+                                           Href="@($"/produto/{product.Slug}")">
+                                    Detalhes
+                                </MudButton>
+                            </div>
+                        </div>
+
                     </MudCard>
                 </MudItem>
             }
         </MudGrid>
 
-        <div class="d-flex justify-center mt-8">
+        <div class="d-flex justify-center mt-12 mb-8">
             <MudPagination Color="Color.Primary" 
+                           Variant="Variant.Outlined"
                            Count="@TotalPages" 
                            Selected="@Request.PageNumber"
-                           SelectedChanged="OnPageChanged" />
+                           SelectedChanged="OnPageChanged" 
+                           Rectangular="true" />
         </div>
     }
 
 </MudContainer>
-
-<style>
-    /* Pequeno ajuste CSS para truncar texto em 2 linhas */
-    .text-truncate-2 {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-    
-    .product-card {
-        transition: transform 0.2s;
-    }
-    
-    .product-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-    }
-</style>

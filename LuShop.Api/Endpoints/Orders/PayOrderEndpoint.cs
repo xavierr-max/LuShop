@@ -11,26 +11,27 @@ namespace LuShop.Api.Endpoints.Orders;
 public class PayOrderEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
-        => app.MapPost("/{number}/pay", HandleAsync)
+        => app.MapPost("/{orderNumber}/pay", HandleAsync)
             .WithName("Orders: Pay")
-            .WithSummary("Realiza o pagamento de um pedido")
-            .WithDescription("Marca um pedido como pago e registra o ID da transação do Gateway")
-            .WithOrder(3)
+            .WithSummary("Inicia o pagamento de um pedido")
+            .WithDescription("Cria uma sessão de pagamento no Stripe e retorna o Session ID")
+            .WithOrder(2)
+            .RequireAuthorization()
             .Produces<Response<Order?>>();
 
     private static async Task<IResult> HandleAsync(
         ClaimsPrincipal user,
         IOrderHandler handler,
-        string number, // Vem da URL: v1/orders/ORD-1234/pay
-        [FromBody] PayOrderRequest request) // Vem do Corpo (JSON): { "externalReference": "txn_999" }
+        [FromRoute] string orderNumber,
+        [FromBody] PayOrderRequest request)
     {
-        // Força o OrderNumber ser o mesmo da URL para garantir segurança
-        // (Evita que o usuário mande URL do pedido A e JSON do pedido B)
-        request.OrderNumber = number;
+        var userId = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value 
+                     ?? user.Identity?.Name 
+                     ?? string.Empty;
         
-        // Opcional: Se quiser registrar quem pagou
-        // request.UserId = user.Identity?.Name ?? string.Empty;
-
+        request.UserId = userId;
+        request.OrderNumber = orderNumber;
+        
         var result = await handler.PayAsync(request);
 
         return result.IsSuccess

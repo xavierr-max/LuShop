@@ -1,0 +1,92 @@
+﻿@page "/checkout/{ProductSlug}"
+@inherits CheckoutPage
+
+<MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
+    <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true" Style="font-weight: 800;">Checkout</MudText>
+    
+    <MudGrid Class="mt-8" Justify="Justify.Center">
+        <MudItem xs="12" sm="12" md="10" lg="8">
+            <MudPaper Class="d-flex flex-column rounded-xl overflow-hidden" Outlined="true" Elevation="2">
+                
+                @if (Product == null)
+                {
+                   <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7"/>
+                }
+                else
+                {
+                    <MudList T="string" Class="pa-0">
+                        @* Item do Produto *@
+                        <MudListItem Icon="@Icons.Material.Filled.ShoppingBag" IconColor="Color.Primary">
+                            <div class="d-flex align-center">
+                                <MudText Typo="Typo.body1" Style="font-weight: 600;">@Product.Title</MudText>
+                                <MudSpacer />
+                                <MudText Typo="Typo.body1" Style="font-weight: 700;">
+                                    @Product.Price.ToString("C")
+                                </MudText>
+                            </div>
+                        </MudListItem>
+                        
+                        <MudDivider />
+
+                        @* Input do Voucher *@
+                        <MudListItem Icon="@(Voucher is null ? Icons.Material.Filled.Discount : Icons.Material.Filled.CheckCircle)" 
+                                     IconColor="@(Voucher is null ? Color.Default : Color.Success)">
+                            <MudTextField T="string"
+                                          Disabled="@(Voucher is not null)"
+                                          Placeholder="Cupom de Desconto"
+                                          @bind-Value="@VoucherCode"
+                                          Variant="Variant.Text"
+                                          Adornment="Adornment.End"
+                                          AdornmentIcon="@Icons.Material.Filled.FactCheck"
+                                          OnAdornmentClick="@(() => { /* Lógica de validar */ })" 
+                                          DisableUnderLine="true"/>
+                        </MudListItem>
+
+                        @* Exibe desconto se houver *@
+                        @if (Voucher is not null)
+                        {
+                            <MudListItem Icon="@Icons.Material.Filled.MoneyOff" IconColor="Color.Success">
+                                <div class="d-flex">
+                                    <MudText Color="Color.Success">Desconto</MudText>
+                                    <MudText Class="ml-auto" Color="Color.Success">
+                                        - @(Voucher.Amount.ToString("C"))
+                                    </MudText>
+                                </div>
+                            </MudListItem>
+                        }
+                    </MudList>
+
+                    <MudDivider />
+
+                    @* Total *@
+                    <div class="pa-6 bg-surface-dark d-flex align-center" style="background-color: var(--mud-palette-background-grey);">
+                        <MudText Typo="Typo.h6">Total a Pagar:</MudText>
+                        <MudSpacer />
+                        <MudText Typo="Typo.h5" Color="Color.Primary" Style="font-weight: 900;">
+                            @Total.ToString("C")
+                        </MudText>
+                    </div>
+                }
+            </MudPaper>
+
+            <MudButton OnClick="OnValidSubmitAsync"
+                       Disabled="@(!IsValid || IsBusy)"
+                       Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       Size="Size.Large"
+                       Class="mt-6 py-4 rounded-lg"
+                       FullWidth="true"
+                       StartIcon="@(IsBusy ? null : Icons.Material.Filled.ArrowForward)">
+                @if (IsBusy)
+                {
+                    <MudProgressCircular Indeterminate="true" Size="Size.Small" Class="ms-n1 me-2" Color="Color.Surface"/>
+                    <MudText>Processando Pedido...</MudText>
+                }
+                else
+                {
+                    <MudText Style="font-weight: 700;">IR PARA PAGAMENTO</MudText>
+                }
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+</MudContainer>

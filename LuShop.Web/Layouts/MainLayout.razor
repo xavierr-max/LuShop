@@ -22,17 +22,22 @@
         @* 1. Spacer empurra a barra de pesquisa para o meio *@
         <MudSpacer />
 
-        @* 2. Container da Barra de Pesquisa 
-              - style="width: 100%; max-width: 500px;" -> Define um tamanho agradável (nem muito curto, nem infinito).
-              - d-none d-sm-flex -> Oculta em telas muito pequenas (celular) para não quebrar o layout.
-        *@
+        @* 2. Container da Barra de Pesquisa *@
         <div class="d-none d-sm-flex align-center mx-4" style="width: 100%; max-width: 500px;">
             <SearchBarComponent/>
         </div>
 
-        @* 3. Spacer empurra os controles de usuário para a direita *@
+        @* 3. Spacer empurra os controles de usuário e o carrinho para a direita *@
         <MudSpacer />
 
+        @* 💡 NOVO BOTÃO: CARRINHO *@
+        <MudTooltip Text="Ir para o Carrinho">
+            <MudIconButton Icon="@Icons.Material.TwoTone.ShoppingCart"
+                           Color="Color.Primary"
+                           Href="/carrinho"
+                           Class="mx-2" />
+        </MudTooltip>
+        
         <AuthorizeView>
             <Authorized Context="authContext">
                 <MudHidden Breakpoint="Breakpoint.SmAndDown">
@@ -97,6 +102,7 @@
 </MudLayout>
 
 @code {
+    // 💡 AVISO: 'Configuration' não está definido neste arquivo. Assumindo que é acessível globalmente ou via injeção.
     private bool _isDarkMode = Configuration.ThemeMode; 
     private bool _drawerOpen = true;
 
